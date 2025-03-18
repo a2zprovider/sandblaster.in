@@ -1,0 +1,336 @@
+@extends('frontend.layout.master')
+@section('title', $page->seo_title)
+@section('keyword', $page->seo_keywords)
+@section('description', $page->seo_description)
+@section('content')
+@section('schema')
+
+
+<script type="application/ld+json">
+	{
+		"@context": "https://schema.org/",
+		"@type": "Product",
+		"name": "{{ $page->title }}",
+		"image": "{{ url('images/product/'.$page->image) }}",
+		"description": "{{ $page->seo_description }}",
+		"brand": {
+			"@type": "Brand",
+			"name": "Sand Blaster"
+		}
+		
+	}
+</script>
+@stop
+@php
+    // dd($page)
+   //dd( explode(',', $page->images))
+   $images=explode(',', $page->images);
+@endphp
+
+<div class="about-breadcrumb-bg">
+    <div class="container">
+       <div class="row about-sty">
+             <div class="col-lg-6"> <about> {{ $page->title }} </about></div>
+             
+             <div class="col-lg-6 float-st-1"><a href="{{route('home')}}"><i class="fas fa-home"></i></a><ab><i class="fa fa-angle-double-right"></i></ab><a href="{{route('page.list')}}">Products</a><ab><i class="fa fa-angle-double-right"></i>  Portable Sand Blasting Machine </ab> </div>
+       </div>
+    </div>
+   </div>
+</div>
+
+<div class="pro-detail-row">
+<div class="container">
+  <div class="row">
+     <div class="col-lg-7">
+        
+          <div class="product-slider">
+            {{-- <img src="{{ url ('images/product/'.$page->image) }}" alt="product-img"> --}}
+
+            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+              <div class="swiper-wrapper">
+              
+                <div class="swiper-slide">
+                  <img src="{{ url ('images/product/'.$page->image) }}" alt="{{ $page->title }}" />
+                </div>
+                @foreach( $images as $imgs)
+                <div class="swiper-slide">
+                  <img src="{{ url ('images/product/imgs/'.$imgs) }}" alt="{{ $page->title }}" />
+                </div>
+                 @endforeach
+              
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+            <div thumbsSlider="" class="swiper mySwiper-1" style="padding-top: 0px;">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="{{ url ('images/product/'.$page->image) }}" alt="{{ $page->title }}" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="{{ url ('images/product/imgs/'.$imgs) }}" alt="{{ $page->title }}" />
+                </div>
+              
+                
+              </div>
+            </div>
+          </div>
+        
+        </div>
+      <div class="col-lg-5">
+        <div class="caption-1 pd-10">
+          <h3 class="name">Portable Sand Blasting Machine</h3>
+          <div class="star-sty">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star-half-full"></i>
+          </div>
+          <p class="price">₹40K-10Lakhs</p>
+          
+          </div>
+          <div class="slider-button-sec-1 btn-st-span">
+            
+            {{-- <button type="button" class="btn button-sty btn-5" data-bs-toggle="modal" data-bs-target="#myModal-um">
+              <img src="{{ asset('images/img/quote.png') }}"  alt="job image" title="job image"/> Upgrade Your Machine</button> --}}
+              
+              <button type="button" class="custom-btn btn-3 get-but" data-bs-toggle="modal" data-bs-target="#myModal-um">
+                <span><img src="{{ asset('images/img/quote.png') }}"  alt="job image" title="job image" style="width: 30px"/> Upgrade Your Machine </span></button>
+        </div>
+        <div class="send-enq-sty">
+          <h5>Send Enquiry for <b>Portable Sand Blasting Machine</b></h5>
+          
+          {{ Form::open(['url' => route('inquerysp'), 'method'=>'POST', 'files' => true,  'class'=>'']) }}
+          {{ csrf_field() }}
+
+               <div class="cont-row-p" style="margin-top:10px;">
+                   <div class="row-lable"><i class="fa fa-user"></i> </div>
+                   <div class="row-text">
+                   <input type="text" id="name" name="name" placeholder="Name" required="">
+                   </div> 
+               </div>
+               
+               {{-- <div class="cont-row-p">
+                   <div class="row-lable"><i class="fa fa-mobile-alt"></i> </div>
+                   <div class="row-text">
+                   <input type="text" id="mobile" name="mobile" placeholder="Mobile" required="">
+                   </div>
+               </div> --}}
+               <div class="cont-row-p">
+                <div class="row-lable"><i class="fa fa-mobile-alt"></i> </div>
+                <div class="row-text mobile">
+                {{-- <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required=""> --}}
+                
+                <select class="custom_select">
+                  <option disabled selected value="default">+91</option>
+                  <option value="US">US</option>
+                  <option value="UK">UK</option>
+                  <option value="IN">IN</option>
+                </select>
+               
+                <input id="seller_phone1" class="sty-in" name="mobile" placeholder="Your Mobile number"  required=""></input>
+               </div>
+            </div>
+               <div class="cont-row">
+                <div class="row-captcha">
+                <div class="g-recaptcha" data-sitekey="6Lfg_ugqAAAAAL3f55MwuMjAsnqeke4H16urHdV-" data-callback="recaptchaCallback"></div>
+               
+                {{-- 6Lfg_ugqAAAAAHz9_CgjaWdA8Fr6y7uuVwFAwgeS   --}}
+                </div>
+                <div class="submit-sty cont-page">  
+                <button class="custom-btn btn-3 get-but submit" type="submit" value="Submit">
+                  <span> <i class="fa fa-send"></i> &nbsp;Submit</span></button>  
+                </div>
+              </div>
+             </form>
+        </div>
+
+
+      </div> <!---clo-lg-5---->
+    </div>
+  </div>
+</div>
+
+<div class="pro-detail-row pb-50">
+    <div class="container"> 
+      <div class="row">
+        <div class="col-lg-7">
+            <div class="product-details-sty">
+                <p>{!! $page->description !!}</p>
+
+                 <h3> Application of {{ $page->title }} </h3>
+                  <ul>
+                    {!! $page->applications !!}
+                    
+                  </ul>
+
+                  <h4>Additional Information of {{ $page->title }}</h4>
+                  <div class="specification-row">
+
+                   
+                    <table>
+                      @foreach(json_decode($page->field1)->name as $key => $field1)
+                      <tr>
+                        <td>{{ $field1 }}</td>
+                        <td>{{ json_decode($page->field1)->value[$key] }}</td>
+                      </tr>
+                      @endforeach
+                    </table>
+
+                    
+
+
+            </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+
+      <div class="sidebarcontents">
+         <p>Contents</p>
+          <ul>
+            @foreach($product_single as $pro)
+            <li><a href="{{ route('page', $pro->slug)}}">{{$pro->title}}</a></li> 
+            @endforeach
+            {{-- <li>Sand Blasting Hopper</li>
+            <li>Specifications of Sand Blasting Machine</li>
+            <li>Additional Information of Sand Blasting Machine</li>
+            <li>Applications of Sand Blasting Machine</li>
+            <li>Sand Blasting Machine Price</li>
+            <li>Types of Sand Blasting Machine</li> --}}
+            <li>Frequently Asked Questions (Faq’s)</li>
+          </ul>
+      </div>
+
+     </div>
+    
+
+  </div>
+    </div>
+  </div>
+     
+     <!--row-->
+   
+
+
+<div class="faq-row" style="padding: 0px">
+  <div class="container">
+      <div class="row">
+        <div class="faq-p-s">
+         <p>Frequently Asked Questions (FAQs)</p>
+        </div>
+      </div>
+      
+  </div>
+  @if(!empty($faqs))
+  <div class="container">
+      <div class="row">
+       @foreach($faqs as $faq)
+        <div class="acc-sty">
+          <div class="acc-faq-sty">
+                <button class="accordion"><p>{{ $faq->title }}</p></button>
+                <div class="panel">
+                  <p>{{ $faq->description }}</p>
+                </div>
+            </div>
+        
+        </div>
+        @endforeach
+      </div>
+
+  </div>
+@endif
+</div>
+
+<div class="explore-our-range-row">
+  <div class="container">
+      <div class="row">
+          <div class="explore-our-range">
+            <div class="rel-pro-p">
+              <p>Related Product</p>
+            </div> 
+          </div>
+      </div>
+      <div class="row">
+          <div class="main-b-r">
+            <div class="row-b-1"></div>
+            <div class="row-b-2"></div>
+           </div> 
+      </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      
+      <div class="swiper mySwiper">
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-wrapper">
+          @foreach($product_single as $pro)
+          <div class="swiper-slide">
+            
+            <div class="card-sty">
+              <aside class="card team1">
+                  <img src="{{ $pro->thumb_image ? url('images/product/' . $pro->thumb_image) : url('images/product/' . $pro->image) }}"  style="border-radius: 30px;" alt="{{$pro->title}}">
+                  <div class="caption"> 
+                  <h2 class="name"><a href="{{ route('page', $pro->slug) }}">{{$pro->title}}</a></h2>
+                  <div class="star-sty">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star-half-full"></i>
+                  </div>
+                  <p class="price">₹40K-10Lakhs</p>
+                  <div class="slider-button-sec-1">
+                    <button type="button" class="custom-btn btn-3 get-but" data-bs-toggle="modal" data-bs-target="#myModal">
+                      <span><img src="{{ asset('images/img/quote.png') }}"  alt="job image" title="job image" /> Get Quotation </span></button> 
+                  
+                    </div>
+                 
+                  </div>
+              </aside>
+            </div>
+          </div>
+          @endforeach
+        
+        </div>
+        
+        {{-- <div class="swiper-pagination"></div> --}}
+      </div>
+
+    </div>
+  </div>
+  
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper(".mySwiper-1", {
+      loop: true,
+      spaceBetween: 10,
+      slidesPerView: 5,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+    var swiper2 = new Swiper(".mySwiper2", {
+      loop: true,
+      spaceBetween: 10,
+      
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      thumbs: {
+        swiper: swiper,
+      },
+
+      
+    });
+  </script>
+  
+
+
+
+@endsection
