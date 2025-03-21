@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Page;
+use App\Models\Productfilter;
 use App\Models\User;
 use App\Models\UserHistory;
 use Illuminate\Http\Request;
@@ -47,7 +48,21 @@ class ProductController extends Controller
                     $cat = $pro ? $pro->title : '';
                     return $cat;
                 })
-                ->rawColumns(['category', 'action', 'author'])
+                ->addColumn('filters', function ($row) {
+                    if (@$row->filter && @$row->filter != null && @$row->filter != '') {
+                        $row->filter = explode(',', $row->filter);
+                    } else {
+                        $row->filter = [];
+                    }
+                    $pros = Productfilter::whereIn('id', $row->filter)->get();
+                    $ta = [];
+                    foreach ($pros as $key => $pro) {
+                        $ta[] = $pro ? $pro->title : '';
+                    }
+                    $ta = implode(', ', $ta);
+                    return $ta;
+                })
+                ->rawColumns(['category', 'action', 'author','filters'])
                 ->make(true);
         }
 
@@ -60,34 +75,46 @@ class ProductController extends Controller
             return view('backend.inc.auth');
         }
         $category = Category::get();
-        $categoryArr  = ['' => 'Select category'];
+        $categoryArr = ['' => 'Select category'];
         if (!$category->isEmpty()) {
             foreach ($category as $pcat) {
                 $categoryArr[$pcat->id] = $pcat->title;
             }
         }
 
-        $data = compact('categoryArr');
+        $filters = Productfilter::whereNotNull('parent')->get();
+        $filterArr = [];
+        if (!$filters->isEmpty()) {
+            foreach ($filters as $pcat) {
+                $filterArr[$pcat->id] = $pcat->title;
+            }
+        }
+
+        $data = compact('categoryArr', 'filterArr');
         return view('backend.inc.product.add', $data);
     }
 
     public function store(Request $request)
     {
         $rules = [
-            'title'  => 'required|string',
-            'image'  => 'required',
-			'slug'  => 'unique:pages'
+            'title' => 'required|string',
+            'image' => 'required',
+            'slug' => 'unique:pages'
         ];
 
         $messages = [
-            'record.title'  => 'Please Enter Name.',
-            'image'  => 'Please Select Image'
+            'record.title' => 'Please Enter Name.',
+            'image' => 'Please Select Image'
         ];
 
         $request->validate($rules, $messages);
 
-        $record           = new Page;
-        $input            = $request->except('_token');
+        $record = new Page;
+        $input = $request->except('_token');
+
+        if (@$input['filter'] && @$input['filter'] != null) {
+            $input['filter'] = implode(',', $input['filter']);
+        }
 
         $input['field'] = $request->field ? json_encode($request->field) : '{"name":[],"value":[]}';
         $input['field1'] = $request->field1 ? json_encode($request->field1) : '{"name":[],"value":[]}';
@@ -110,26 +137,26 @@ class ProductController extends Controller
             $input['images'] = json_encode($imgs);
         }
 
-        $input['slug']    = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
+        $input['slug'] = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
         $input['author'] = auth()->user()->name;
         $record->fill($input);
-       
-		$exists = Page::where('slug',$input['slug'])->count();
-        if($exists){
+
+        $exists = Page::where('slug', $input['slug'])->count();
+        if ($exists) {
             return redirect()->back()->with('error', 'Error! Slug is already exists.');
-        }		
-		
+        }
+
         if ($record->save()) {
             if (auth()->user()->role = 'user') {
                 $per = ['s_view' => 'yes', 's_add' => 'yes', 's_edit' => 'yes', 's_delete' => 'yes'];
                 $record->permission()->attach(auth()->user()->id, $per);
 
-                $history            = new UserHistory;
-                $history->user_id   = auth()->user()->id;
+                $history = new UserHistory;
+                $history->user_id = auth()->user()->id;
                 $history->user_name = auth()->user()->name;
-                $history->page_id   = $record->id;
-                $history->title     = $record->title;
-                $history->message   = 'Product Added';
+                $history->page_id = $record->id;
+                $history->title = $record->title;
+                $history->message = 'Product Added';
                 $history->save();
             }
 
@@ -159,16 +186,28 @@ class ProductController extends Controller
             }
         }
 
+        if (@$product->filter && @$product->filter != null) {
+            $product->filter = explode(',', $product->filter);
+        }
         $page = $product;
-        $editData =  $product->toArray();
+        $editData = $product->toArray();
         $request->replace($editData);
         $request->flash();
 
+
         $category = Category::get();
-        $categoryArr  = ['' => 'Select category'];
+        $categoryArr = ['' => 'Select category'];
         if (!$category->isEmpty()) {
             foreach ($category as $pcat) {
                 $categoryArr[$pcat->id] = $pcat->title;
+            }
+        }
+
+        $filters = Productfilter::whereNotNull('parent')->get();
+        $filterArr = [];
+        if (!$filters->isEmpty()) {
+            foreach ($filters as $pcat) {
+                $filterArr[$pcat->id] = $pcat->title;
             }
         }
 
@@ -183,27 +222,33 @@ class ProductController extends Controller
         }
         $images_url_arr = implode(',', $images_url_arr);
 
-        $data = compact('page', 'categoryArr', 'images_url_arr');
+        $data = compact('page', 'categoryArr', 'images_url_arr', 'filterArr');
         return view('backend.inc.product.edit', $data);
     }
 
     public function update(Request $request, Page $product)
     {
         $rules = [
-            'title'  => 'required|string',
-            'slug'  => 'required|string|unique:pages,slug,'.$product->id
+            'title' => 'required|string',
+            'slug' => 'required|string|unique:pages,slug,' . $product->id
         ];
 
         $messages = [
-            'title'  => 'Please Enter title.',
+            'title' => 'Please Enter title.',
         ];
 
         $request->validate($rules, $messages);
-		
-        $record     = $product;
-        $input      = $request->except('_token', '_method');
+
+        $record = $product;
+        $input = $request->except('_token', '_method');
         $input['field'] = $request->field ? $request->field : '{"name":[],"value":[]}';
         $input['field1'] = $request->field1 ? $request->field1 : '{"name":[],"value":[]}';
+
+        if (@$input['filter'] && @$input['filter'] != null) {
+            $input['filter'] = implode(',', $input['filter']);
+        } else {
+            $input['filter'] = '';
+        }
 
         if ($request->hasFile('images')) {
             $files = $request->file('images');
@@ -226,7 +271,7 @@ class ProductController extends Controller
             $input['images'] = $imgs;
         }
 
-        $input['slug']    = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
+        $input['slug'] = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
         if (auth()->user()->role != 'admin') {
             $input['author'] = auth()->user()->name;
         }
@@ -234,12 +279,12 @@ class ProductController extends Controller
 
         if ($record->save()) {
             if (auth()->user()->role = 'user') {
-                $history            = new UserHistory;
-                $history->user_id   = auth()->user()->id;
+                $history = new UserHistory;
+                $history->user_id = auth()->user()->id;
                 $history->user_name = auth()->user()->name;
-                $history->page_id   = $record->id;
-                $history->title     = $record->title;
-                $history->message   = 'Product Edited';
+                $history->page_id = $record->id;
+                $history->title = $record->title;
+                $history->message = 'Product Edited';
                 $history->save();
             }
             return redirect(route('admin.product.index'))->with('success', 'Success! Record has been edited');
@@ -269,12 +314,12 @@ class ProductController extends Controller
                 }
             }
 
-            $history            = new UserHistory;
-            $history->user_id   = auth()->user()->id;
+            $history = new UserHistory;
+            $history->user_id = auth()->user()->id;
             $history->user_name = auth()->user()->name;
-            $history->page_id   = $product->id;
-            $history->title     = $product->title;
-            $history->message   = 'Product Deleted';
+            $history->page_id = $product->id;
+            $history->title = $product->title;
+            $history->message = 'Product Deleted';
             $history->save();
         }
         if ($product->deleted_at) {
@@ -316,12 +361,12 @@ class ProductController extends Controller
                     }
                 }
 
-                $history            = new UserHistory;
-                $history->user_id   = auth()->user()->id;
+                $history = new UserHistory;
+                $history->user_id = auth()->user()->id;
                 $history->user_name = auth()->user()->name;
-                $history->page_id   = $obj->id;
-                $history->title     = $obj->title;
-                $history->message   = 'Product Deleted';
+                $history->page_id = $obj->id;
+                $history->title = $obj->title;
+                $history->message = 'Product Deleted';
                 $history->save();
             }
             $obj->delete();
@@ -354,7 +399,7 @@ class ProductController extends Controller
             return view('backend.inc.auth');
         }
         $page = $product;
-        $editData =  $product->toArray();
+        $editData = $product->toArray();
         $request->replace($editData);
         $request->flash();
 
@@ -364,8 +409,8 @@ class ProductController extends Controller
 
     public function meta_update(Request $request, Page $product)
     {
-        $record     = $product;
-        $input      = $request->except('_token', '_method');
+        $record = $product;
+        $input = $request->except('_token', '_method');
 
         $record->fill($input);
         if ($record->save()) {
@@ -415,7 +460,7 @@ class ProductController extends Controller
             if (!file_exists($optimizePath)) {
                 mkdir($optimizePath, 0755, true);
             }
-            $name    = time() . '.' . $file->extension();
+            $name = time() . '.' . $file->extension();
             $optimizeImage->save($optimizePath . $name);
         }
 
@@ -424,7 +469,7 @@ class ProductController extends Controller
 
     public function image_delete(Request $request)
     {
-        $filename =  $request->get('filename');
+        $filename = $request->get('filename');
         $path = public_path() . '/images/product/' . $filename;
         if (file_exists($path)) {
             unlink($path);
@@ -441,7 +486,7 @@ class ProductController extends Controller
             if (!file_exists($optimizePath)) {
                 mkdir($optimizePath, 0755, true);
             }
-            $name    = 'thumb_' . time() . '.' . $file->extension();
+            $name = 'thumb_' . time() . '.' . $file->extension();
             $optimizeImage->save($optimizePath . $name);
         }
 
@@ -450,7 +495,7 @@ class ProductController extends Controller
 
     public function thumb_image_delete(Request $request)
     {
-        $filename =  $request->get('filename');
+        $filename = $request->get('filename');
         $path = public_path() . '/images/product/' . $filename;
         if (file_exists($path)) {
             unlink($path);
@@ -467,7 +512,7 @@ class ProductController extends Controller
             if (!file_exists($optimizePath)) {
                 mkdir($optimizePath, 0755, true);
             }
-            $name    = time() . '' . rand(10000, 99999) . '.' . $file->extension();
+            $name = time() . '' . rand(10000, 99999) . '.' . $file->extension();
             $optimizeImage->save($optimizePath . $name);
         }
 
@@ -476,7 +521,7 @@ class ProductController extends Controller
 
     public function multi_image_delete(Request $request)
     {
-        $filename =  $request->get('filename');
+        $filename = $request->get('filename');
         $path = public_path() . '/images/product/imgs/' . $filename;
         if (file_exists($path)) {
             unlink($path);

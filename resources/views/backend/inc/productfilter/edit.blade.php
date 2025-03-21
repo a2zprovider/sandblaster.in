@@ -1,5 +1,5 @@
 @extends('backend.layout.master')
-@section('title','Category Edit')
+@section('title','Product Filter Edit')
 @section('style')
 
 <!-- Vendor Styles -->
@@ -20,20 +20,20 @@
 
     <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y">
-        {{ Form::open(['url' => route('admin.category.update',$category->id), 'method'=>'PUT', 'files' => true, 'class' => 'needs-validation','novalidate']) }}
+        {{ Form::open(['url' => route('admin.productfilter.update',$productfilter->id), 'method'=>'PUT', 'files' => true, 'class' => 'needs-validation','novalidate']) }}
         <div class="card mb-4 header-sticky">
             <div class="d-flex justify-content-between align-items-center py-3 mb-2 card-body">
                 <h4 class="fw-bold m-0">
-                    <span class="text-muted fw-light">Category /</span> Edit
+                    <span class="text-muted fw-light">Product Filter /</span> Edit
                 </h4>
                 <div>
-                    <a href="{{ route('admin.category.index') }}" class="btn-primary btn" type="reset" style="margin-right: 20px;">Cancel</a>
+                    <a href="{{ route('admin.productfilter.index') }}" class="btn-primary btn" type="reset" style="margin-right: 20px;">Cancel</a>
                     <button class="btn-primary btn" type="submit">Update</button>
                 </div>
             </div>
         </div>
         
-        @include('backend.inc.category._form')
+        @include('backend.inc.productfilter._form')
 
         {{ Form::close() }}
 
@@ -58,7 +58,6 @@
 <script src="{{ url('admin/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/select2/select2.js') }}"></script>
-<script src="{{ url('admin/vendor/libs/bootstrap-select/bootstrap-select.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 
 <script src="{{ url('admin/vendor/libs/dropzone/dropzone.js') }}"></script>
@@ -141,16 +140,16 @@
     });
 </script>
 
-@if($category->image)
+@if($productfilter->image)
 <script>
     var mockFile = {
-        name: "{{ $category->image }}",
+        name: "{{ $productfilter->image }}",
         size: "2"
     };
     myDropzone.emit("addedfile", mockFile);
-    myDropzone.emit("thumbnail", mockFile, "{{ url('images/category/' . $category->image) }}");
+    myDropzone.emit("thumbnail", mockFile, "{{ url('images/productfilter/' . $productfilter->image) }}");
     myDropzone.emit("complete", mockFile);
-    $('.image_file').val('{{ $category->image }}')
+    $('.image_file').val('{{ $productfilter->image }}')
 </script>
 @endif
 

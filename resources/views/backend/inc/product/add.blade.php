@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/flatpickr/flatpickr.css') }}" />
+<link rel="stylesheet" href="{{ url('admin/vendor/libs/typeahead-js/typeahead.css') }}" />
+<link rel="stylesheet" href="{{ url('admin/vendor/libs/tagify/tagify.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/dropzone/dropzone.css') }}" />
@@ -46,28 +48,24 @@
 @endsection
 @section('script')
 
-
 <script src="{{ url('admin/vendor/libs/cleavejs/cleave.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/cleavejs/cleave-phone.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/moment/moment.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script src="{{ url('admin/vendor/libs/typeahead-js/typeahead.js') }}"></script>
+<script src="{{ url('admin/vendor/libs/tagify/tagify.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/select2/select2.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/bootstrap-select/bootstrap-select.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
-<script src="{{ url('admin/vendor/libs/jquery-repeater/jquery-repeater.js') }}"></script>
 
-<script src="{{ url('admin/vendor/libs/bloodhound/bloodhound.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/dropzone/dropzone.js') }}"></script>
-
 <!-- BEGIN: Page JS-->
 <script src="{{ url('admin/js/forms-extras.js') }}"></script>
 <script src="{{ url('admin/js/form-validation.js') }}"></script>
 <script src="{{ url('admin/js/form-layouts.js') }}"></script>
-
-<script src="{{ url('admin/js/forms-selects.js') }}"></script>
 <!-- END: Page JS-->
 
 <script>

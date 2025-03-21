@@ -41,6 +41,7 @@ Route::get('/blog/category/{slug}', [HomeController::class, 'category'])->name('
 Route::get('/blog/tag/{slug}', [HomeController::class, 'tag'])->name('blog.tag');
 
 Route::get('/blog/year/{year}', [HomeController::class, 'filterByYear'])->name('blog.year');
+Route::get('/ajax/product/{slug}', [HomeController::class, 'ajaxProductDetails'])->name('ajax.product');
 
 
 

@@ -1,5 +1,5 @@
 @extends('backend.layout.master')
-@section('title','Category List')
+@section('title','Product Filter List')
 @section('style')
 
 <!-- Vendor Styles -->
@@ -43,17 +43,17 @@ $trash = request()->has('trash');
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h4 class="fw-bold m-0">
-                    <span class="text-muted fw-light">Category /</span>@if($trash) Trash @endif View
+                    <span class="text-muted fw-light">Product Filter /</span>@if($trash) Trash @endif View
                 </h4>
                 <div>
                     @if(!$trash)
                     @if(auth()->user()->role=='admin')
-                    <a href="{{ route('admin.category.index','trash') }}" class="btn-primary btn" style="margin-right: 20px;"> Trash </a>
+                    <a href="{{ route('admin.productfilter.index','trash') }}" class="btn-primary btn" style="margin-right: 20px;"> Trash </a>
                     @endif
                     <div class="btn-danger btn" id="delete_record" style="margin-right: 20px;"> Delete </div>
-                    <a href="{{ route('admin.category.create') }}" class="btn-primary btn text-white"> Add </a>
+                    <a href="{{ route('admin.productfilter.create') }}" class="btn-primary btn text-white"> Add </a>
                     @else
-                    <a href="{{ route('admin.category.index') }}" class="btn-primary btn"> Back </a>
+                    <a href="{{ route('admin.productfilter.index') }}" class="btn-primary btn"> Back </a>
                     @endif
                 </div>
             </div>
@@ -90,7 +90,7 @@ $trash = request()->has('trash');
                         <th>No</th>
                         <th>Title</th>
                         <th>Slug</th>
-                        <th>Filter</th>
+                        <th>Parent</th>
                         <th>Author</th>
                         <th width="100px">Action</th>
                     </tr>
@@ -134,7 +134,7 @@ $trash = request()->has('trash');
             processing: true,
             serverSide: true,
             searchable: true,
-            ajax: "{{ route('admin.category.index') }}" + $(location).attr("search"),
+            ajax: "{{ route('admin.productfilter.index') }}" + $(location).attr("search"),
 
             columns: [{
                     data: 'id',
@@ -154,8 +154,8 @@ $trash = request()->has('trash');
                     name: 'slug'
                 },
                 {
-                    data: 'filters',
-                    name: 'filters'
+                    data: 'parent',
+                    name: 'parent'
                 },
                 {
                     data: 'author',
@@ -218,7 +218,7 @@ $trash = request()->has('trash');
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '{{ route("admin.category.deleteAll") }}',
+                            url: '{{ route("admin.productfilter.deleteAll") }}',
                             type: 'post',
                             data: {
                                 request: 2,
@@ -244,7 +244,7 @@ $trash = request()->has('trash');
     });
 
     function handelDelete(id) {
-        var url = "{{ route('admin.category.index') }}";
+        var url = "{{ route('admin.productfilter.index') }}";
         url = url + '/' + id;
         Swal.fire({
             title: "Are you sure?",

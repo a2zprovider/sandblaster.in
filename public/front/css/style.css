@@ -327,7 +327,7 @@
     .close {
         color: #aaaaaa;
         float: right;
-        font-size: 28px;
+        font-size: 18px;
         font-weight: bold;
         text-align: right;
     }
@@ -2103,7 +2103,7 @@
         font: Oswald;
         color: #454545;
         position: sticky;
-        top: 0px;
+        top: 140px;
     }
     
     .sidebarcontents a {

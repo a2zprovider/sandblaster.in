@@ -1,5 +1,5 @@
 @php
-$setting = App\Models\Setting::first();
+    $setting = App\Models\Setting::first();
 @endphp
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed layout-navbar-fixed">
@@ -7,7 +7,8 @@ $setting = App\Models\Setting::first();
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title> @yield('title') | {{ $setting->title ? $setting->title : 'Admin' }}</title>
     <meta name="description" content="" />
     <meta name="keywords" content="">
@@ -20,7 +21,9 @@ $setting = App\Models\Setting::first();
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ url('admin/vendor/fonts/boxiconse04f.css') }}" />
     <link rel="stylesheet" href="{{ url('admin/vendor/fonts/fontawesomeb34a.css') }}" />
     <link rel="stylesheet" href="{{ url('admin/vendor/fonts/flag-iconsc977.css') }}" /> <!-- Core CSS -->
@@ -120,6 +123,11 @@ $setting = App\Models\Setting::first();
                             <li class="menu-item @if(Request::routeIs('admin.product.create')) active @endif">
                                 <a href="{{ route('admin.product.create') }}" class="menu-link">
                                     <div>Add</div>
+                                </a>
+                            </li>
+                            <li class="menu-item @if(Request::routeIs('admin.productfilter.index')) active @endif">
+                                <a href="{{ route('admin.productfilter.index') }}" class="menu-link">
+                                    <div>Product Filter</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
@@ -254,65 +262,65 @@ $setting = App\Models\Setting::first();
                         </a>
                     </li>     
                     @if(auth()->user()->role == 'admin')
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-copy"></i>
-                            <div>Location</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item ">
-                                <a href="javascript:void(0)" class="menu-link menu-toggle">
-                                    <div>Country</div>
-                                </a>
-                                <ul class="menu-sub">                                    
-                                    <li class="menu-item @if(Request::routeIs('admin.country.index')) active @endif">
-                                        <a href="{{ route('admin.country.index') }}" class="menu-link">
-                                            <div>View</div>
-                                        </a>
-                                    </li>                                    
-                                    <li class="menu-item  @if(Request::routeIs('admin.country.create')) active @endif">
-                                        <a href="{{ route('admin.country.create') }}" class="menu-link">
-                                            <div>Add</div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="menu-item ">
-                                <a href="javascript:void(0)" class="menu-link menu-toggle">
-                                    <div>State</div>
-                                </a>
-                                <ul class="menu-sub">                                    
-                                    <li class="menu-item  @if(Request::routeIs('admin.state.index')) active @endif">
-                                        <a href="{{ route('admin.state.index') }}" class="menu-link">
-                                            <div>View</div>
-                                        </a>
-                                    </li>                                    
-                                    <li class="menu-item  @if(Request::routeIs('admin.state.create')) active @endif">
-                                        <a href="{{ route('admin.state.create') }}" class="menu-link">
-                                            <div>Add</div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="menu-item ">
-                                <a href="javascript:void(0)" class="menu-link menu-toggle">
-                                    <div>City</div>
-                                </a>
-                                <ul class="menu-sub">                                    
-                                    <li class="menu-item  @if(Request::routeIs('admin.city.index')) active @endif">
-                                        <a href="{{ route('admin.city.index') }}" class="menu-link">
-                                            <div>View</div>
-                                        </a>
-                                    </li>                                    
-                                    <li class="menu-item  @if(Request::routeIs('admin.city.create')) active @endif">
-                                        <a href="{{ route('admin.city.create') }}" class="menu-link">
-                                            <div>Add</div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>  
+                        <li class="menu-item">
+                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                <i class="menu-icon tf-icons bx bx-copy"></i>
+                                <div>Location</div>
+                            </a>
+                            <ul class="menu-sub">
+                                <li class="menu-item ">
+                                    <a href="javascript:void(0)" class="menu-link menu-toggle">
+                                        <div>Country</div>
+                                    </a>
+                                    <ul class="menu-sub">                                    
+                                        <li class="menu-item @if(Request::routeIs('admin.country.index')) active @endif">
+                                            <a href="{{ route('admin.country.index') }}" class="menu-link">
+                                                <div>View</div>
+                                            </a>
+                                        </li>                                    
+                                        <li class="menu-item  @if(Request::routeIs('admin.country.create')) active @endif">
+                                            <a href="{{ route('admin.country.create') }}" class="menu-link">
+                                                <div>Add</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item ">
+                                    <a href="javascript:void(0)" class="menu-link menu-toggle">
+                                        <div>State</div>
+                                    </a>
+                                    <ul class="menu-sub">                                    
+                                        <li class="menu-item  @if(Request::routeIs('admin.state.index')) active @endif">
+                                            <a href="{{ route('admin.state.index') }}" class="menu-link">
+                                                <div>View</div>
+                                            </a>
+                                        </li>                                    
+                                        <li class="menu-item  @if(Request::routeIs('admin.state.create')) active @endif">
+                                            <a href="{{ route('admin.state.create') }}" class="menu-link">
+                                                <div>Add</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item ">
+                                    <a href="javascript:void(0)" class="menu-link menu-toggle">
+                                        <div>City</div>
+                                    </a>
+                                    <ul class="menu-sub">                                    
+                                        <li class="menu-item  @if(Request::routeIs('admin.city.index')) active @endif">
+                                            <a href="{{ route('admin.city.index') }}" class="menu-link">
+                                                <div>View</div>
+                                            </a>
+                                        </li>                                    
+                                        <li class="menu-item  @if(Request::routeIs('admin.city.create')) active @endif">
+                                            <a href="{{ route('admin.city.create') }}" class="menu-link">
+                                                <div>Add</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>  
                     @endif
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -341,18 +349,18 @@ $setting = App\Models\Setting::first();
                         <span class="menu-header-text">Extra</span>
                     </li>   
                     @if(auth()->user()->role == 'admin') l
-                    <li class="menu-item @if(Request::routeIs('admin.user.index')) active @endif">
-                        <a href="{{ route('admin.user.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-user"></i>
-                            <div>User</div>
-                        </a>
-                    </li>
-                    <li class="menu-item @if(Request::routeIs('admin.userhistory.index')) active @endif">
-                        <a href="{{ route('admin.userhistory.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-user"></i>
-                            <div>User History</div>
-                        </a>
-                    </li>
+                        <li class="menu-item @if(Request::routeIs('admin.user.index')) active @endif">
+                            <a href="{{ route('admin.user.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div>User</div>
+                            </a>
+                        </li>
+                        <li class="menu-item @if(Request::routeIs('admin.userhistory.index')) active @endif">
+                            <a href="{{ route('admin.userhistory.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div>User History</div>
+                            </a>
+                        </li>
                     @endif           
                     <li class="menu-item">  
                         <a href="javascript:void(0);" class="menu-link menu-toggle">

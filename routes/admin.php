@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
     Route::get('/category/restore/{category:id}', 'CategoryController@restore')->name('category.restore');
     Route::get('/blogcategory/restore/{blogcategory:id}', 'BlogcategoryController@restore')->name('blogcategory.restore');
     Route::get('/tag/restore/{tag:id}', 'TagController@restore')->name('tag.restore');
+    Route::get('/productfilter/restore/{productfilter:id}', 'ProductfilterController@restore')->name('productfilter.restore');
     Route::get('/inquiry/restore/{inquiry:id}', 'InquiryController@restore')->name('inquiry.restore');
 
     // Product
@@ -106,6 +107,7 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
     Route::post('/faq/deleteAll', 'FaqController@deleteAll')->name('faq.deleteAll');
     Route::post('/slider/deleteAll', 'SliderController@deleteAll')->name('slider.deleteAll');
     Route::post('/application/deleteAll', 'ApplicationController@deleteAll')->name('application.deleteAll');
+    Route::post('/productfilter/deleteAll', 'ProductfilterController@deleteAll')->name('productfilter.deleteAll');
 
     Route::post('/user/deleteAll', 'UserController@deleteAll')->name('user.deleteAll');
     Route::post('/role/deleteAll', 'RoleController@deleteAll')->name('role.deleteAll');
@@ -130,6 +132,10 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
     Route::post('/category/image', 'CategoryController@image_upload')->name('category.image');
     Route::post('/category/image/detele', 'CategoryController@image_delete')->name('category.image.delete');
 
+    // Productfilter
+    Route::post('/productfilter/image', 'ProductfilterController@image_upload')->name('productfilter.image');
+    Route::post('/productfilter/image/detele', 'ProductfilterController@image_delete')->name('productfilter.image.delete');
+
     // Blog Category
     Route::post('/blogcategory/image', 'BlogcategoryController@image_upload')->name('blogcategory.image');
     Route::post('/blogcategory/image/detele', 'BlogcategoryController@image_delete')->name('blogcategory.image.delete');
@@ -150,6 +156,7 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
         'faq' => 'FaqController',
         'slider' => 'SliderController',
         'application' => 'ApplicationController',
+        'productfilter'  => 'ProductfilterController',
 
         'country' => 'CountryController',
         'state' => 'StateController',

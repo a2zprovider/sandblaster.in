@@ -8,6 +8,7 @@ use App\Models\Inquery;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Blogcategory;
+use App\Models\Productfilter;
 use App\Models\Setting;
 use App\Models\Application;
 use App\Models\Category;
@@ -28,13 +29,13 @@ class HomeController extends Controller
         $product = Page::latest()->get()->take(9);
         $products = Page::where('position', 'Low')->latest()->get()->take(9);
         $high = Page::where('position', 'High')->latest()->get()->take(8);
-        
+
 
         $application = Application::latest()->get();
         $blog_cat = Post::latest()->get()->take(10);
         $faqs = Faq::whereRaw("find_in_set('home' , category_id)")->take(4)->get();
         $about = About::first();
-        return view('frontend.inc.homepage', ['setting' => $setting, 'sliders' => $slider, 'application' => $application,  'product'=>$product, 'products' => $products, 'high_pro' => $high, 'faqs' => $faqs, 'about' => $about, 'blog_cat' => $blog_cat]);
+        return view('frontend.inc.homepage', ['setting' => $setting, 'sliders' => $slider, 'application' => $application, 'product' => $product, 'products' => $products, 'high_pro' => $high, 'faqs' => $faqs, 'about' => $about, 'blog_cat' => $blog_cat]);
     }
 
     public function about()
@@ -42,7 +43,7 @@ class HomeController extends Controller
         $setting = Setting::first();
         $about = About::first();
         $faqs = Faq::whereRaw("find_in_set('home' , category_id)")->take(4)->get();
-        $data = compact('setting', 'about','faqs');
+        $data = compact('setting', 'about', 'faqs');
         return view('frontend.inc.about', $data);
     }
 
@@ -55,23 +56,105 @@ class HomeController extends Controller
     }
     public function page_list(Request $request)
     {
-        $limit = 6;
+        $limit = 100;
         if ($request->limit) {
             $limit = $request->limit;
         }
 
         $setting = Setting::first();
         $query = Page::query();
-       // dd ($qurery);
+        // dd ($qurery);
         if ($request->s) {
             $query->where('title', 'LIKE', "%{$request->s}%");
         }
-       // $lists = $query->latest()->paginate($limit); get()
-       $lists = $query->latest()->get(); 
+        // $lists = $query->latest()->paginate($limit); get()
+
         $recent_page = Page::paginate(10);
-        $data = compact('setting', 'lists', 'recent_page');
+        $categories = Category::latest()->get();
+        $selected_category = $request->query('category');
+        $filters = [];
+        $productfilters = '';
+        $selected_category_details = '';
+        if ($selected_category) {
+            $selected_category_details = Category::where('slug', $selected_category)->firstOrFail();
+            if (@$selected_category_details->filter && @$selected_category_details->filter != null && @$selected_category_details->filter != '') {
+                $filters = explode(',', $selected_category_details->filter);
+            } else {
+                $filters = [];
+            }
+            $productfilters = Productfilter::whereNull('parent')->whereIn('id', $filters)->get();
+
+        } else {
+            $productfilters = Productfilter::whereNull('parent')->get();
+        }
+        // dd($selected_category_details);
+
+        foreach ($productfilters as $key => $pf) {
+            $productfilters1 = Productfilter::where('parent', $pf->id)->get();
+            $pf->filters = $productfilters1;
+        }
+        if ($selected_category) {
+            $query = $query->where('category_id', $selected_category_details->id);
+        }
+        $afs = [];
+        $allselectedfilter = [];
+        $allfilters = Productfilter::whereNull('parent')->get();
+        foreach ($allfilters as $key => $af) {
+            if ($request->query($af->slug)) {
+                $f_detail = Productfilter::where('slug', $request->query($af->slug))->firstOrFail();
+                $allselectedfilter[] = $f_detail;
+                $afs[] = $f_detail->id;
+            }
+        }
+        if (count($afs)) {
+            $query = $query->whereRaw("FIND_IN_SET(?, filter)", $afs);
+        }
+        $lists = $query->latest()->get();
+
+        $r_query = $request->query();
+        // dd($r_query);
+        $data = compact('setting', 'lists', 'recent_page', 'categories', 'productfilters', 'r_query', 'allselectedfilter', 'selected_category_details');
         return view('frontend.inc.product', $data);
     }
+
+    public function ajaxProductDetails(Request $request, $slug)
+    {
+        $page = Page::where('slug', $slug)->firstOrFail();
+        $filters = [];
+        $category = Category::findOrFail($page->category_id);
+        if (@$category->filter && @$category->filter != null && @$category->filter != '') {
+            $filters = explode(',', $category->filter);
+        } else {
+            $filters = [];
+        }
+        $productfilters = Productfilter::whereNull('parent')->whereIn('id', $filters)->get();
+        foreach ($productfilters as $key => $pf) {
+            $productfilters1 = Productfilter::where('parent', $pf->id)->get();
+            $pf->filters = $productfilters1;
+        }
+
+        $afs = [];
+        $allfilters = Productfilter::whereNull('parent')->get();
+        foreach ($allfilters as $key => $af) {
+            if ($request->query($af->slug)) {
+                $f_detail = Productfilter::where('slug', $request->query($af->slug))->firstOrFail();
+                $afs[] = $f_detail->id;
+            }
+        }
+        $lists = [];
+        if (count($afs)) {
+            $query1 = Page::where('category_id', $category->id);
+            if (!empty($afs)) {
+                foreach ($afs as $af) {
+                    $query1 = $query1->whereRaw("FIND_IN_SET(?, filter)", [$af]);
+                }
+            }
+            $lists = $query1->get();
+        }
+
+        return response()->json(['filters' => $productfilters, 'category' => $category, 'products' => $lists]);
+    }
+
     public function apl_list(Request $request)
     {
         $limit = 6;
@@ -120,26 +203,26 @@ class HomeController extends Controller
         $blogsidebars = Post::take(7)->get();
 
         $tagb = Tag::take(7)->get();
-       
+
         $blogcategories = Blogcategory::take(6)->get();
 
-        return view('frontend.inc.blog', ["blogs" => $blogs, "tagb" =>$tagb, "blogsidebar" => $blogsidebars, "blogcategory" => $blogcategories, 'setting' => $setting]);
+        return view('frontend.inc.blog', ["blogs" => $blogs, "tagb" => $tagb, "blogsidebar" => $blogsidebars, "blogcategory" => $blogcategories, 'setting' => $setting]);
     }
 
-    
-    
-    public function category($slug) {
+    public function category($slug)
+    {
         $category = BlogCategory::where('slug', $slug)->firstOrFail();
-        $blogs = Post::where('category_id', $category->id)->paginate(10); 
+        $blogs = Post::where('category_id', $category->id)->paginate(10);
         $setting = Setting::first();
         $blogcategory = Blogcategory::take(6)->get();
         $blogsidebar = Post::take(7)->get();
         $tagb = Tag::take(7)->get();
 
-        return view('frontend.inc.blog', compact('category', 'blogs', 'setting','blogcategory','blogsidebar','tagb'));
+        return view('frontend.inc.blog', compact('category', 'blogs', 'setting', 'blogcategory', 'blogsidebar', 'tagb'));
     }
 
-    public function tag($slug) {
+    public function tag($slug)
+    {
         $tag = Tag::where('slug', $slug)->firstOrFail();
         // $blogs = Post::where('tags', $tag->id)->paginate(10);     
         $blogs = Post::whereRaw("FIND_IN_SET(?, tags)", [$tag->id])->paginate(10);
@@ -149,22 +232,18 @@ class HomeController extends Controller
         $blogsidebar = Post::take(7)->get();
         $tagb = Tag::take(7)->get();
 
-        return view('frontend.inc.blog', compact('tag', 'blogs', 'setting','blogcategory','blogsidebar','tagb'));
+        return view('frontend.inc.blog', compact('tag', 'blogs', 'setting', 'blogcategory', 'blogsidebar', 'tagb'));
     }
+    public function filterByYear($year)
+    {
+        $blogs = Post::whereYear('created_at', $year)->paginate(10);
+        $blogcategory = BlogCategory::all();
+        $blogsidebar = Post::latest()->take(5)->get();
+        $tagb = Tag::all();
+        $setting = Setting::first();
 
-   
-
-public function filterByYear($year)
-{
-    $blogs = Post::whereYear('created_at', $year)->paginate(10);
-    $blogcategory = BlogCategory::all();
-    $blogsidebar = Post::latest()->take(5)->get();
-    $tagb = Tag::all();
-    $setting = Setting::first();
-
-    return view('frontend.inc.blog', compact('blogs', 'blogcategory', 'blogsidebar', 'tagb','setting'));
-}
-    
+        return view('frontend.inc.blog', compact('blogs', 'blogcategory', 'blogsidebar', 'tagb', 'setting'));
+    }
 
     public function blog_detail(Request $request, Post $post)
     {
@@ -177,7 +256,7 @@ public function filterByYear($year)
         //dd($posttag);
         $tagb = Tag::take(7)->get();
         $blogs = Post::take(6)->get();
-        $data = compact('setting', 'post', 'posttag', 'recent_blogs', 'blogsidebar','blogcategory','blogs','tagb');
+        $data = compact('setting', 'post', 'posttag', 'recent_blogs', 'blogsidebar', 'blogcategory', 'blogs', 'tagb');
         return view('frontend.inc.singleblog', $data);
     }
 
@@ -216,7 +295,7 @@ public function filterByYear($year)
         $inquery->fill($input);
 
         $inquery->save();
-       // $response = Http::post('https://inquiry.airoshotblast.in/api/enquiry/cutwire.in/', $input);
+        // $response = Http::post('https://inquiry.airoshotblast.in/api/enquiry/cutwire.in/', $input);
         return redirect()->back()->with('success', 'Your Message Sended Successfully.');
     }
 
@@ -224,9 +303,9 @@ public function filterByYear($year)
     {
         // Validate form inputs
         $validator = Validator::make($request->all(), [
-            'name'    => 'required|min:3',
-            'email'   => 'required|email',
-            'mobile'  => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'mobile' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             'message' => 'required|min:5',
             'g-recaptcha-response' => 'required'
         ]);
@@ -242,7 +321,7 @@ public function filterByYear($year)
         return response()->json(['success' => true, 'message' => 'Thank you! Your inquiry has been submitted.']);
     }
 
-    
+
     public function inquery(Request $request)
     {
         $rules = [
@@ -258,18 +337,9 @@ public function filterByYear($year)
         $input = $request->except('_token', 'submit', 'g-recaptcha-response');
         $inquery = new Inquery();
         $inquery->fill($input);
-        // dd($inquery);
         $inquery->save();
-       
-       if ($rules->fails()) {
-        return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
-    }
 
-    // If validation passes, you can store the data in the database
-    // Contact::create($request->all());
-
-    return response()->json(['success' => true, 'message' => 'Thank you! Your inquiry has been submitted.']);
-       
+        return redirect()->back()->with('success', 'Thank you! Your inquiry has been submitted.');
 
 
     }
@@ -277,9 +347,7 @@ public function filterByYear($year)
     {
         $rules = [
             'name' => 'required',
-            
             'mobile' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-           
             'g-recaptcha-response' => 'required'
         ];
         $request->validate($rules);
@@ -290,8 +358,11 @@ public function filterByYear($year)
         // dd($inquery);
         $inquery->save();
         //$response = Http::post('https://inquiry.airoshotblast.in/api/enquiry/cutwire.in/', $input);
-        return redirect()->back()->with('success', 'Thank you for your inquiry! You will receive our catalog with latest price soon.');
-        
+        return response()->json([
+            'message' => 'Thank you for your inquiry! You will receive our catalog with latest price soon.',
+            'data' => $inquery
+        ]);
+
     }
     public function ajexinquery(Request $request)
     {

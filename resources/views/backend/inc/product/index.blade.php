@@ -241,6 +241,7 @@
                             <th>No</th>
                             <th>Title</th>
                             <th>Category</th>
+                            <th>Filter</th>
                             <th>Author</th>
                             <th width="100px">Action</th>
                         </tr>
@@ -302,6 +303,10 @@
                     {
                         data: 'category',
                         name: 'category'
+                    },
+                    {
+                        data: 'filters',
+                        name: 'filters'
                     },
                     {
                         data: 'author',

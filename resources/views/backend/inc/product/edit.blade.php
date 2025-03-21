@@ -3,8 +3,8 @@
 @section('style')
 
 <!-- Vendor Styles -->
-<link rel="stylesheet" href="{{ url('admin/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/select2/select2.css') }}" />
+<link rel="stylesheet" href="{{ url('admin/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/flatpickr/flatpickr.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/typeahead-js/typeahead.css') }}" />
 <link rel="stylesheet" href="{{ url('admin/vendor/libs/tagify/tagify.css') }}" />
@@ -58,8 +58,8 @@
 <script src="{{ url('admin/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/select2/select2.js') }}"></script>
+<script src="{{ url('admin/vendor/libs/bootstrap-select/bootstrap-select.js') }}"></script>
 <script src="{{ url('admin/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
-<script src="{{ url('admin/vendor/libs/jquery-repeater/jquery-repeater.js') }}"></script>
 
 <script src="{{ url('admin/vendor/libs/dropzone/dropzone.js') }}"></script>
 <!-- BEGIN: Page JS-->

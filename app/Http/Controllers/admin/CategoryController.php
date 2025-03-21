@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Productfilter;
 use App\Models\UserHistory;
 use Illuminate\Http\Request;
 use DataTables;
@@ -36,7 +37,21 @@ class CategoryController extends Controller
                     }
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->addColumn('filters', function ($row) {
+                    if (@$row->filter && @$row->filter != null && @$row->filter != '') {
+                        $row->filter = explode(',', $row->filter);
+                    } else {
+                        $row->filter = [];
+                    }
+                    $pros = Productfilter::whereIn('id', $row->filter)->get();
+                    $ta = [];
+                    foreach ($pros as $key => $pro) {
+                        $ta[] = $pro ? $pro->title : '';
+                    }
+                    $ta = implode(', ', $ta);
+                    return $ta;
+                })
+                ->rawColumns(['action', 'filters'])
                 ->make(true);
         }
 
@@ -49,50 +64,62 @@ class CategoryController extends Controller
             return view('backend.inc.auth');
         }
         $categories = Category::get();
-        $categoryArr  = ['' => 'Select parent category'];
+        $categoryArr = ['' => 'Select parent category'];
         if (!$categories->isEmpty()) {
             foreach ($categories as $pcat) {
                 $categoryArr[$pcat->id] = $pcat->title;
             }
         }
 
-        $data = compact('categoryArr');
+        $filters = Productfilter::whereNull('parent')->get();
+        $filterArr = [];
+        if (!$filters->isEmpty()) {
+            foreach ($filters as $pcat) {
+                $filterArr[$pcat->id] = $pcat->title;
+            }
+        }
+
+        $data = compact('categoryArr', 'filterArr');
         return view('backend.inc.category.add', $data);
     }
 
     public function store(Request $request)
     {
         $rules = [
-            'title'  => 'required|string',
-			'slug'  => 'unique:categories'
+            'title' => 'required|string',
+            'slug' => 'unique:categories'
         ];
 
         $messages = [
-            'title'  => 'Please Enter Name.',
+            'title' => 'Please Enter Name.',
         ];
 
         $request->validate($rules, $messages);
 
-        $record           = new Category;
-        $input            = $request->except('_token');
+        $record = new Category;
+        $input = $request->except('_token');
 
-        $input['slug']    = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
+        if (@$input['filter'] && @$input['filter'] != null) {
+            $input['filter'] = implode(',', $input['filter']);
+        }
+
+        $input['slug'] = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
         $input['author'] = auth()->user()->name;
         $record->fill($input);
-		
-        $exists = Category::where('slug',$input['slug'])->count();
-        if($exists){
+
+        $exists = Category::where('slug', $input['slug'])->count();
+        if ($exists) {
             return redirect()->back()->with('error', 'Error! Slug is already exists.');
-        }		
-		
+        }
+
         if ($record->save()) {
             if (auth()->user()->role = 'user') {
-                $history            = new UserHistory;
-                $history->user_id   = auth()->user()->id;
+                $history = new UserHistory;
+                $history->user_id = auth()->user()->id;
                 $history->user_name = auth()->user()->name;
-                $history->page_id   = $record->id;
-                $history->title     = $record->title;
-                $history->message   = 'Category Added';
+                $history->page_id = $record->id;
+                $history->title = $record->title;
+                $history->message = 'Category Added';
                 $history->save();
             }
             return redirect(route('admin.category.index'))->with('success', 'Success! New record has been added.');
@@ -111,52 +138,71 @@ class CategoryController extends Controller
         if (!$this->checkPermisssion('edit category')) {
             return view('backend.inc.auth');
         }
-        $editData =  $category->toArray();
+
+        if (@$category->filter && @$category->filter != null) {
+            $category->filter = explode(',', $category->filter);
+        }
+
+        $editData = $category->toArray();
         $request->replace($editData);
         $request->flash();
 
 
         $categories = Category::get();
-        $categoryArr  = ['' => 'Select parent category'];
+        $categoryArr = ['' => 'Select parent category'];
         if (!$categories->isEmpty()) {
             foreach ($categories as $pcat) {
                 $categoryArr[$pcat->id] = $pcat->title;
             }
         }
 
-        $data = compact('category', 'categoryArr');
+        $filters = Productfilter::whereNull('parent')->get();
+        $filterArr = [];
+        if (!$filters->isEmpty()) {
+            foreach ($filters as $pcat) {
+                $filterArr[$pcat->id] = $pcat->title;
+            }
+        }
+
+        $data = compact('category', 'categoryArr', 'filterArr');
         return view('backend.inc.category.edit', $data);
     }
 
     public function update(Request $request, Category $category)
     {
         $rules = [
-            'title'  => 'required|string',
-            'slug'  => 'required|string|unique:categories,slug,'.$category->id
+            'title' => 'required|string',
+            'slug' => 'required|string|unique:categories,slug,' . $category->id
         ];
 
         $messages = [
-            'title'  => 'Please Enter title.',
+            'title' => 'Please Enter title.',
         ];
 
         $request->validate($rules, $messages);
-		
-        $record     = $category;
-        $input      = $request->except('_token', '_method');
 
-        $input['slug']    = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
+        $record = $category;
+        $input = $request->except('_token', '_method');
+
+        if (@$input['filter'] && @$input['filter'] != null) {
+            $input['filter'] = implode(',', $input['filter']);
+        } else {
+            $input['filter'] = '';
+        }
+
+        $input['slug'] = $input['slug'] == '' ? Str::slug($input['title'], '-') : Str::slug($input['slug'], '-');
         if (auth()->user()->role != 'admin') {
             $input['author'] = auth()->user()->name;
         }
         $record->fill($input);
         if ($record->save()) {
             if (auth()->user()->role = 'user') {
-                $history            = new UserHistory;
-                $history->user_id   = auth()->user()->id;
+                $history = new UserHistory;
+                $history->user_id = auth()->user()->id;
                 $history->user_name = auth()->user()->name;
-                $history->page_id   = $record->id;
-                $history->title     = $record->title;
-                $history->message   = 'Category Edited';
+                $history->page_id = $record->id;
+                $history->title = $record->title;
+                $history->message = 'Category Edited';
                 $history->save();
             }
             return redirect(route('admin.category.index'))->with('success', 'Success! Record has been edited');
@@ -178,12 +224,12 @@ class CategoryController extends Controller
         }
         $category = Category::withTrashed()->find($category);
         if (auth()->user()->role = 'user') {
-            $history            = new UserHistory;
-            $history->user_id   = auth()->user()->id;
+            $history = new UserHistory;
+            $history->user_id = auth()->user()->id;
             $history->user_name = auth()->user()->name;
-            $history->page_id   = $category->id;
-            $history->title     = $category->title;
-            $history->message   = 'Category Deleted';
+            $history->page_id = $category->id;
+            $history->title = $category->title;
+            $history->message = 'Category Deleted';
             $history->save();
         }
         if ($category->deleted_at) {
@@ -202,12 +248,12 @@ class CategoryController extends Controller
         $objs = Category::whereIn('id', $request->ids_arr)->get();
         foreach ($objs as $key => $obj) {
             if (auth()->user()->role = 'user') {
-                $history            = new UserHistory;
-                $history->user_id   = auth()->user()->id;
+                $history = new UserHistory;
+                $history->user_id = auth()->user()->id;
                 $history->user_name = auth()->user()->name;
-                $history->page_id   = $obj->id;
-                $history->title     = $obj->title;
-                $history->message   = 'Category Deleted';
+                $history->page_id = $obj->id;
+                $history->title = $obj->title;
+                $history->message = 'Category Deleted';
                 $history->save();
             }
             $obj->delete();
@@ -224,7 +270,7 @@ class CategoryController extends Controller
             if (!file_exists($optimizePath)) {
                 mkdir($optimizePath, 0755, true);
             }
-            $name    = time() . '.' . $file->extension();
+            $name = time() . '.' . $file->extension();
             $optimizeImage->save($optimizePath . $name, 72);
         }
 
@@ -233,7 +279,7 @@ class CategoryController extends Controller
 
     public function image_delete(Request $request)
     {
-        $filename =  $request->get('filename');
+        $filename = $request->get('filename');
         $path = public_path() . '/images/category/' . $filename;
         if (file_exists($path)) {
             unlink($path);

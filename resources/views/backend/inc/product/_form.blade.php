@@ -50,6 +50,11 @@
                         <div class="invalid-feedback"> Please enter price range. </div>
                     </div>
                     <div class="col-md-12 mb-3">
+                        {{ Form::label('filter', 'Filter', ['class' => 'form-label']) }}
+                        {{ Form::select('filter[]', $filterArr, '0', ['class' => 'selectpicker w-100', 'data-style' => 'btn-default', 'data-icon-base' => 'bx', 'data-tick-icon' => 'bx-check text-primary', 'id' => 'filter', 'multiple']) }}
+                        <div class="invalid-feedback"> Please select filter </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
                         {{ Form::label('short-description', 'Short Description',['class' => 'form-label']) }}
                         {{ Form::textarea('short_description','', ['class'=>'form-control bootstrap-maxlength-example', 'placeholder'=>'Short Description', 'rows'=>'3' ,'id'=>'short-description','maxlength'=>'300' ]) }}
                     </div>
