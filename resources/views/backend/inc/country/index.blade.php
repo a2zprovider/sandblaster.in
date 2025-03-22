@@ -79,6 +79,10 @@
                         <th></th>
                         <th>No</th>
                         <th>Name</th>
+                        <th>Code</th>
+                        <th>Emoji</th>
+                        <th>Image</th>
+                        <th>Dial Code</th>
                         <th width="100px">Action</th>
                     </tr>
                 </thead>
@@ -134,6 +138,22 @@
                 {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'code',
+                    name: 'code'
+                },
+                {
+                    data: 'emoji',
+                    name: 'emoji'
+                },
+                {
+                    data: 'image',
+                    name: 'image'
+                },
+                {
+                    data: 'dial_code',
+                    name: 'dial_code'
                 },
                 {
                     data: 'action',

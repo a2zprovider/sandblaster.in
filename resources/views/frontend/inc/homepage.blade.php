@@ -367,8 +367,8 @@
   <div class="container">
     <div class="row">
       <div class="">
-        <p class="psty-1">Types of Portable Sand Blasting Machines</p>
-        <p class="psty-2">Exploring the Different Variations of Portable Sand Blasting Equipment for Efficient Surface
+        <p class="psty-1">Types of Sand Blasting Machines</p>
+        <p class="psty-2">Exploring the Different Variations of Sand Blasting Equipment for Efficient Surface
           Cleaning</p>
       </div>
       <div class="row">
@@ -534,10 +534,10 @@
                   {{-- <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required=""> --}}
 
                   <select class="custom_select">
-                    <option disabled selected value="default">+91</option>
-                    <option value="US">US</option>
-                    <option value="UK">UK</option>
-                    <option value="IN">IN</option>
+                    <option selected value="+91">+91</option>
+                    @foreach($countries as $country)
+                    <option value="{{$country->dial_code}}">{{$country->dial_code}}</option>
+                    @endforeach
                   </select>
 
                   <input id="seller_phone1" class="sty-in" name="mobile" placeholder="Your Mobile number"

@@ -2,6 +2,7 @@
 $productf = App\Models\Page::latest()->get()->take(4);
 $blogf = App\Models\Post::latest()->get()->take(4);
 $setting = App\Models\Setting::first();
+$countries = App\Models\Country::get();
 @endphp
 <!--- footer section---->
 <div class="footer-row">
@@ -111,10 +112,10 @@ $setting = App\Models\Setting::first();
                     <div class="row-text mobile">
                       {{-- <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required=""> --}}
                       <select class="custom_select">
-                        <option disabled selected value="default">+91</option>
-                        <option value="US">US</option>
-                        <option value="UK">UK</option>
-                        <option value="IN">IN</option>
+                        <option selected value="+91">+91</option>
+                        @foreach($countries as $country)
+                        <option value="{{$country->dial_code}}">{{$country->dial_code}}</option>
+                        @endforeach
                       </select>
                       <input id="seller_phone1" class="sty-in" name="mobile" placeholder="Your Mobile number"
                         required=""></input>
@@ -271,10 +272,10 @@ $setting = App\Models\Setting::first();
                         {{-- <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required=""> --}}
 
                         <select class="custom_select">
-                          <option disabled selected value="default">+91</option>
-                          <option value="US">US</option>
-                          <option value="UK">UK</option>
-                          <option value="IN">IN</option>
+                          <option selected value="+91">+91</option>
+                          @foreach($countries as $country)
+                          <option value="{{$country->dial_code}}">{{$country->dial_code}}</option>
+                          @endforeach
                         </select>
 
                         <input id="seller_phone1" class="sty-in" name="mobile" placeholder="Your Mobile number"

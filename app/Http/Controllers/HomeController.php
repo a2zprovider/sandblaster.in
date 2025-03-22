@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\About;
+use App\Models\Country;
 use App\Models\Faq;
 use App\Models\Inquery;
 use App\Models\Page;
@@ -35,23 +36,26 @@ class HomeController extends Controller
         $blog_cat = Post::latest()->get()->take(10);
         $faqs = Faq::whereRaw("find_in_set('home' , category_id)")->take(4)->get();
         $about = About::first();
-        return view('frontend.inc.homepage', ['setting' => $setting, 'sliders' => $slider, 'application' => $application, 'product' => $product, 'products' => $products, 'high_pro' => $high, 'faqs' => $faqs, 'about' => $about, 'blog_cat' => $blog_cat]);
+        $countries = Country::get();
+        return view('frontend.inc.homepage', ['setting' => $setting, 'sliders' => $slider, 'application' => $application, 'product' => $product, 'products' => $products, 'high_pro' => $high, 'faqs' => $faqs, 'about' => $about, 'blog_cat' => $blog_cat, 'countries' => $countries]);
     }
 
     public function about()
     {
         $setting = Setting::first();
         $about = About::first();
+        $countries = Country::get();
         $faqs = Faq::whereRaw("find_in_set('home' , category_id)")->take(4)->get();
-        $data = compact('setting', 'about', 'faqs');
+        $data = compact('setting', 'about', 'faqs', 'countries');
         return view('frontend.inc.about', $data);
     }
 
     public function contact()
     {
         $setting = Setting::first();
+        $countries = Country::get();
 
-        $data = compact('setting');
+        $data = compact('setting', 'countries');
         return view('frontend.inc.contact', $data);
     }
     public function page_list(Request $request)
@@ -267,7 +271,8 @@ class HomeController extends Controller
         $recent_page = Page::paginate(6);
         $faqs = Faq::where('category_id', 'LIKE', "%{$page->id}%")->get();
         $related_post = Post::whereRaw("find_in_set( $page->id,products)")->latest()->get();
-        $data = compact('setting', 'page', 'faqs', 'product_single', 'recent_page', 'related_post');
+        $countries = Country::get();
+        $data = compact('setting', 'page', 'faqs', 'product_single', 'recent_page', 'related_post', 'countries');
         return view('frontend.inc.singleproduct', $data);
     }
     public function apl_detail(Request $request, Application $app)

@@ -3240,7 +3240,7 @@
     .sty-in {
         position: relative;
         width: 100%;
-        padding: 15px 0px 15px 70px !important;
+        padding: 15px 0px 15px 90px !important;
     }
     
     select option:focus {
@@ -3251,7 +3251,7 @@
     }
     
     .cont-row-p .sty-in {
-        padding: 19px 0px 19px 70px !important;
+        padding: 19px 0px 19px 90px !important;
     }
     
     .cont-row-p .custom_select {
