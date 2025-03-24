@@ -214,7 +214,9 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-4">
           <div class="fet-but-sty">
-            <button class="custom-btn btn-3" type="submit"><span> Check Out More Features</span></button>
+            <a href="{{ route('page', 'sand-blasting-machine') }}">
+              <button class="custom-btn btn-3" type="submit"><span> Check Out More Features</span></button>
+            </a>
           </div>
         </div>
         <div class="col-lg-4"></div>

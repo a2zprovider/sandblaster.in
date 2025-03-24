@@ -115,7 +115,7 @@
                                 <button type="button" class="custom-btn btn-3 get-but" data-bs-toggle="modal"
                                     data-bs-target="#myModal-1">
                                     <span>
-                                        <img src="{{ asset('images/img/quote.png') }}" alt="job image" title="job image"
+                                        <img src="{{ asset('images/img/quote.png') }}" alt="Quotation" title="Quotation"
                                             style="width: 30px" /> Get Quotation
                                     </span>
                                 </button>

@@ -66,7 +66,7 @@
               Turbochargers, Piston, Cylinder, Gears, Clutches, Shafts. Transformer Industries – Tank, Fins, Radiators,
               Fabrication Industries – Tanks, Heat Exchangers, Poles, etc. Shipping Industries – for remove rust, paint,
               corrosion from ships using abrasives media like steel shot, grit shot, and <a
-                href="/aluminum-oxide">aluminum oxide</a>. Pipe Industries –
+                href="{{ route('page', 'aluminum-oxide') }}">aluminum oxide</a>. Pipe Industries –
               for cleaning & remove welding flux, remove corrosion.</p>
           </div>
         </div>
@@ -87,7 +87,7 @@
               international quality
               products to achieve global recognition.</p>
             <p class="pb-0 pt-0">
-              We are among the oldest in the Industry of Shot Blasting, <a href="/sand-blasting-room">Blast Room</a>
+              We are among the oldest in the Industry of Shot Blasting, <a href="{{ route('page', 'sand-blasting-room') }}">Blast Room</a>
               System, Vacuum blast machine, table
               shot blast machine, tumble shot blast Manufacturers in Australia The Company has commenced production of
               Shotblasting & Blast Room many years. Since then it has delivered more than 8000 Shot Blasting & table
