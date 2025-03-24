@@ -45,7 +45,6 @@
 		]
 	}
 </script>
-
 <script type="application/ld+json">
   {
       "@context": "https://schema.org",
@@ -65,46 +64,42 @@
               "item": "{{ route('page', $pro->slug) }}"
               @endforeach
           }
-         
       ]
   }
 </script>
 @endif
 @stop
 @section('content')
+@if(count($sliders))
+@foreach ($sliders as $slider)
 <div class="slide-row">
   <div class="container">
     <div class="row head-text-sty">
       <div class="col-lg-6">
         <div class="slider-section">
-          <h2>Sand Blasting Machine</h2>
-
+          <h2>{{$slider->title}}</h2>
           <div class="p-sty">
-            <p>Sand Blasting Machine can be used to eliminate old paint, decrease a rough exterior surface or give
-              configuration to an object. Abrasives can be used such as copper slag, steel grit, pieces of walnut,
-              powder abrasive, steel shot, plastic abrasive media, aluminum oxide, and many others.
-            </p>
+            <p>{{$slider->description}}</p>
           </div>
         </div>
         <div class="get-q-sty">
-
           <button type="button" class="custom-btn btn-3 get-but" data-bs-toggle="modal" data-bs-target="#myModal-1">
-            <span><img src="{{ asset('images/img/quote.png') }}" alt="job image" title="job image" /> Get Quotation
+            <span><img src="{{ asset('images/img/quote.png') }}" alt="Quotation" title="Quotation" /> Get Quotation
             </span></button>
         </div>
       </div>
       <div class="col-lg-6">
         <div class="slider-image-section">
-          <img src="{{ asset('images/img/p7-500-airo.png') }}" alt="job image" title="job image" />
+          <img src="{{ url('images/slider/' . $slider->image) }}" alt="{{$slider->title}}" title="{{$slider->title}}" />
         </div>
       </div>
     </div>
   </div>
 </div>
-</div>
+@endforeach
+@endif
 
 <!--feature section--->
-
 <div class="features-sec-row">
   <div class="container">
     <div class="row">
@@ -163,7 +158,6 @@
             <img src="{{ asset('images/img/icon-4.png') }}" alt="job image" title="job image" />
           </div>
         </div>
-
       </div>
       <div class="col-lg-2">
         <div class="feature-sec-main-img">
@@ -181,7 +175,6 @@
               grit, or other abrasives).</p>
           </div>
         </div>
-
         <div class="feat-sec-cont-row">
           <div class="feat-sec-cont-img-r">
             <img src="{{ asset('images/img/icon-6.png') }}" alt="job image" title="job image" />
@@ -191,9 +184,7 @@
             <p>Stores the abrasive material (like sand, steel
               grit, or other abrasives).</p>
           </div>
-
         </div>
-
         <div class="feat-sec-cont-row">
           <div class="feat-sec-cont-img-r">
             <img src="{{ asset('images/img/icon-7.png') }}" alt="job image" title="job image" />
@@ -203,9 +194,7 @@
             <p>Stores the abrasive material (like sand, steel
               grit, or other abrasives).</p>
           </div>
-
         </div>
-
         <div class="feat-sec-cont-row">
           <div class="feat-sec-cont-img-r">
             <img src="{{ asset('images/img/icon-8.png') }}" alt="job image" title="job image" />
@@ -215,13 +204,9 @@
             <p>Stores the abrasive material (like sand, steel
               grit, or other abrasives).</p>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
   <div class="featrures-btn-row">
     <div class="container">
@@ -235,7 +220,6 @@
         <div class="col-lg-4"></div>
       </div>
     </div>
-
   </div>
 </div>
 <div class="why-choose-us-row">
@@ -243,7 +227,7 @@
     <div class="row">
       <div class="col-md-4">
         <div class="why-choose-sty">
-          <img src="{{ asset('images/img/abrasive-media-icon.png') }}" alt="job image" title="job image" />
+          <img src="{{ asset('images/img/abrasive-media-icon.png') }}" alt="Abrasive media" title="Abrasive media" />
           <h3>Abrasive media</h3>
           <p>The material used in sandblasting, such as sand, steel grit, glass beads, or aluminum oxide, is crucial for
             the effectiveness of the process.</p>
@@ -251,7 +235,8 @@
       </div>
       <div class="col-md-4">
         <div class="why-choose-sty">
-          <img src="{{ asset('images/img/safety-icon.png') }}" alt="job image" title="job image" />
+          <img src="{{ asset('images/img/safety-icon.png') }}" alt="Safety Considerations"
+            title="Safety Considerations" />
           <h3>Safety Considerations</h3>
           <p>Sand Blasting produces significant dust, which can be harmful to the operator’s health. Safety measures
             such as protective clothing, gloves, & goggles, are essential.</p>
@@ -259,7 +244,8 @@
       </div>
       <div class="col-md-4">
         <div class="why-choose-sty">
-          <img src="{{ asset('images/img/cost-effective-icon.png') }}" alt="job image" title="job image" />
+          <img src="{{ asset('images/img/cost-effective-icon.png') }}" alt="Efficiency and Cost-Effectiveness"
+            title="Efficiency and Cost-Effectiveness" />
           <h3>Efficiency and Cost-Effectiveness</h3>
           <p>Sand Blasting is an efficient and quick method for cleaning and finishing. With the media reclamation
             system, abrasives can be reused, which makes it more cost-effective.</p>
@@ -269,7 +255,7 @@
     <div class="row">
       <div class="col-md-4">
         <div class="why-choose-sty">
-          <img src="{{ asset('images/img/Blast Pot Design.png') }}" alt="job image" title="job image" />
+          <img src="{{ asset('images/img/Blast Pot Design.png') }}" alt="Blast Pot Design" title="Blast Pot Design" />
           <h3>Blast Pot Design</h3>
           <p>Check if the blast pot is designed for easy loading and unloading of materials. Some machines come with
             features like automatic media flow systems for greater efficiency.</p>
@@ -277,7 +263,8 @@
       </div>
       <div class="col-md-4">
         <div class="why-choose-sty">
-          <img src="{{ asset('images/img/Noise and Dust Control.png') }}" alt="job image" title="job image" />
+          <img src="{{ asset('images/img/Noise and Dust Control.png') }}" alt="Noise and Dust Control"
+            title="Noise and Dust Control" />
           <h3>Noise and Dust Control</h3>
           <p>For a safer and more comfortable working environment, look for machines that feature effective noise
             suppression and advanced dust control systems, such as vacuums.</p>
@@ -285,7 +272,8 @@
       </div>
       <div class="col-md-4">
         <div class="why-choose-sty">
-          <img src="{{ asset('images/img/maintenance.png') }}" alt="job image" title="job image" />
+          <img src="{{ asset('images/img/maintenance.png') }}" alt="Ease of Use and Maintenance"
+            title="Ease of Use and Maintenance" />
           <h3>Ease of Use and Maintenance</h3>
           <p>Easy to operate and maintain, with features such as abrasive media refilling, & quick nozzle changes. A
             machine that’s difficult to use or maintain will lead to inefficiency.</p>
@@ -341,7 +329,7 @@
 
                     <button type="button" class="custom-btn btn-3 get-but" data-bs-toggle="modal"
                       data-bs-target="#myModal-1">
-                      <span><img src="{{ asset('images/img/quote.png') }}" alt="job image" title="job image" /> Get
+                      <span><img src="{{ asset('images/img/quote.png') }}" alt="Quotation" title="Quotation" /> Get
                         Quotation </span></button>
 
                   </div>
@@ -426,14 +414,10 @@
   </div>
 </div>
 
-<!--types of machine end -->
-
 <!---power of sand blasting start---->
-
 <div class="explore-our-range-row">
   <div class="container">
     <div class="row">
-
       <div class="explore-our-range">
         <p>Unleashing the Power of Sand Blasting</p>
         <h3> Discover the Efficiency, Versatility, and Benefits of Sand Blasting Machines in Various Industries</h3>
@@ -448,28 +432,25 @@
   </div>
 
   <div class="explore-slider">
-
     @if(count($blog_cat))
     <div class="container">
       <div class="row">
-
         <div class="swiper mySwiper">
           <div class="swiper-button-next"></div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-wrapper">
             @foreach($blog_cat as $blog)
             <div class="swiper-slide">
-
               <div class="card-sty">
                 <aside class="card-h team1">
-
                   <img
                     src="{{ $blog->thumb_image ? url('images/blog/' . $blog->thumb_image) : url('images/blog/' . $blog->image) }}"
                     class="blog-img" alt="{{$blog->title}}">
                   <div class="caption">
                     <h2 class="name"><a href="{{ route('blog.detail', $blog->slug) }}">{{$blog->title}}</a></h2>
                     <div class="card-cat-sty">
-                      <p> <i class="fa fa-th"></i> &nbsp; Category: {{$blog->title}}
+                      <p> <i class="fa fa-th"></i> &nbsp; Category:
+                        {{$blog->blogcategory?$blog->blogcategory->title:''}}
                       <p>
                     </div>
                     <p class="datesty"><i class="fa fa-calendar"></i> &nbsp; Published On: {{
@@ -480,9 +461,7 @@
             </div>
             @endforeach
           </div>
-          {{-- <div class="swiper-pagination"></div> --}}
         </div>
-
       </div>
     </div>
     @endif
@@ -491,7 +470,6 @@
 </div>
 </div>
 
-<!-- power of sand blasting end--->
 <!------ get in tough strat ----->
 <div class="get-in-tough">
   <div class="overlay">

@@ -69,6 +69,31 @@ class SettingController extends Controller
         }
         return $filename;
     }
+    public function logo2_upload(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $file = $request->image;
+            $optimizeImage = Image::make($file);
+            $optimizePath = public_path() . '/images/setting/';
+            if (!file_exists($optimizePath)) {
+                mkdir($optimizePath, 0755, true);
+            }
+            $name    = 'logo2.' . $file->extension();
+            $optimizeImage->save($optimizePath . $name, 72);
+        }
+
+        return response()->json(['success' => $name]);
+    }
+
+    public function logo2_delete(Request $request)
+    {
+        $filename =  $request->get('filename');
+        $path = public_path() . '/images/setting/' . $filename;
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        return $filename;
+    }
 
     public function favicon_upload(Request $request)
     {

@@ -53,7 +53,7 @@
                         {{ Form::label('address', 'Address',['class' => 'form-label']) }}
                         {{ Form::textarea('address','', ['class'=>'form-control', 'placeholder'=>'Address', 'rows'=>'3' ,'id'=>'address']) }}
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-4 mb-3">
                         <h6 class="fw-semibold">Logo</h6>
                         <hr class="mt-0" />
                         <div action="https://demos.themeselection.com/upload" class="dropzone needsclick" id="dropzone1-basic">
@@ -66,7 +66,20 @@
                         </div>
                         <input name="logo" type="hidden" class="logo_file" required />
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-4 mb-3">
+                        <h6 class="fw-semibold">Logo 2</h6>
+                        <hr class="mt-0" />
+                        <div action="https://demos.themeselection.com/upload" class="dropzone needsclick dropzone3-basic">
+                            <div class="dz-message needsclick">
+                                Drop files here or click to upload
+                            </div>
+                            <div class="fallback">
+                                <input name="logo2" type="file" required />
+                            </div>
+                        </div>
+                        <input name="logo2" type="hidden" class="logo2_file" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
                         <h6 class="fw-semibold">Favicon</h6>
                         <hr class="mt-0" />
                         <div action="https://demos.themeselection.com/upload" class="dropzone needsclick dropzone2-basic">
@@ -158,5 +171,7 @@
 
 <div class="logo-upload-url" data-url="{{ route('admin.setting.logo') }}"></div>
 <div class="logo-delete-url" data-url="{{ route('admin.setting.logo.delete') }}"></div>
+<div class="logo2-upload-url" data-url="{{ route('admin.setting.logo2') }}"></div>
+<div class="logo2-delete-url" data-url="{{ route('admin.setting.logo2.delete') }}"></div>
 <div class="favicon-upload-url" data-url="{{ route('admin.setting.favicon') }}"></div>
 <div class="favicon-delete-url" data-url="{{ route('admin.setting.favicon.delete') }}"></div>

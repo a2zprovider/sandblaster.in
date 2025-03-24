@@ -261,6 +261,12 @@
                             <div>About us</div>
                         </a>
                     </li>     
+                    <li class="menu-item @if(Request::routeIs('admin.client.index')) active @endif">
+                        <a href="{{ route('admin.client.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-copy"></i>
+                            <div>Client</div>
+                        </a>
+                    </li>   
                     @if(auth()->user()->role == 'admin')
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link menu-toggle">

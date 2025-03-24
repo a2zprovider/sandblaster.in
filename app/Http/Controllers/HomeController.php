@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\About;
+use App\Models\Client;
 use App\Models\Country;
 use App\Models\Faq;
 use App\Models\Inquery;
@@ -31,7 +32,6 @@ class HomeController extends Controller
         $products = Page::where('position', 'Low')->latest()->get()->take(9);
         $high = Page::where('position', 'High')->latest()->get()->take(8);
 
-
         $application = Application::latest()->get();
         $blog_cat = Post::latest()->get()->take(10);
         $faqs = Faq::whereRaw("find_in_set('home' , category_id)")->take(4)->get();
@@ -45,8 +45,9 @@ class HomeController extends Controller
         $setting = Setting::first();
         $about = About::first();
         $countries = Country::get();
+        $clients = Client::get();
         $faqs = Faq::whereRaw("find_in_set('home' , category_id)")->take(4)->get();
-        $data = compact('setting', 'about', 'faqs', 'countries');
+        $data = compact('setting', 'about', 'faqs', 'countries', 'clients');
         return view('frontend.inc.about', $data);
     }
 
@@ -176,6 +177,7 @@ class HomeController extends Controller
         $data = compact('setting', 'lists', 'recent_page');
         return view('frontend.inc.application', $data);
     }
+
     public function blog_list(Request $request)
     {
         $query = Post::query();
@@ -275,6 +277,7 @@ class HomeController extends Controller
         $data = compact('setting', 'page', 'faqs', 'product_single', 'recent_page', 'related_post', 'countries');
         return view('frontend.inc.singleproduct', $data);
     }
+
     public function apl_detail(Request $request, Application $app)
     {
         $setting = Setting::first();
@@ -291,7 +294,7 @@ class HomeController extends Controller
             'email' => 'required|email',
             'mobile' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             'message' => 'required',
-            'g-recaptcha-response' => 'required'
+            // 'g-recaptcha-response' => 'required'
         ];
         $request->validate($rules);
 
@@ -306,26 +309,20 @@ class HomeController extends Controller
 
     public function inqueryss(Request $request)
     {
-        // Validate form inputs
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
             'email' => 'required|email',
             'mobile' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             'message' => 'required|min:5',
-            'g-recaptcha-response' => 'required'
+            // 'g-recaptcha-response' => 'required'
         ]);
 
-        // Check for validation failure
         if ($validator->fails()) {
             return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
-        // If validation passes, you can store the data in the database
-        // Contact::create($request->all());
-
         return response()->json(['success' => true, 'message' => 'Thank you! Your inquiry has been submitted.']);
     }
-
 
     public function inquery(Request $request)
     {
@@ -335,7 +332,7 @@ class HomeController extends Controller
             'mobile' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             // 'subject' => 'required',
             'message' => 'required',
-            'g-recaptcha-response' => 'required'
+            // 'g-recaptcha-response' => 'required'
         ];
         $request->validate($rules);
 
@@ -348,12 +345,13 @@ class HomeController extends Controller
 
 
     }
+
     public function inquerysp(Request $request)
     {
         $rules = [
             'name' => 'required',
             'mobile' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'g-recaptcha-response' => 'required'
+            // 'g-recaptcha-response' => 'required'
         ];
         $request->validate($rules);
 
@@ -371,7 +369,6 @@ class HomeController extends Controller
     }
     public function ajexinquery(Request $request)
     {
-
         try {
             $rules = [
                 'name' => 'required',
@@ -379,7 +376,7 @@ class HomeController extends Controller
                 'mobile' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
                 'subject' => 'required',
                 'message' => 'required',
-                'g-recaptcha-response' => 'required'
+                // 'g-recaptcha-response' => 'required'
             ];
             $request->validate($rules);
 
@@ -411,7 +408,6 @@ class HomeController extends Controller
             return response()->json($re);
         }
     }
-
 
     public function sitemap()
     {

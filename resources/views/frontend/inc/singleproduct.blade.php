@@ -31,7 +31,7 @@ $images = explode(',', $page->images);
       </div>
       <div class="col-lg-6 float-st-1"><a href="{{route('home')}}"><i class="fas fa-home"></i></a>
         <ab><i class="fa fa-angle-double-right"></i></ab><a href="{{route('page.list')}}">Products</a>
-        <ab><i class="fa fa-angle-double-right"></i> Portable Sand Blasting Machine </ab>
+        <ab><i class="fa fa-angle-double-right"></i> {{ $page->title }} </ab>
       </div>
     </div>
   </div>
@@ -42,7 +42,6 @@ $images = explode(',', $page->images);
     <div class="row">
       <div class="col-lg-7">
         <div class="product-slider">
-          {{-- <img src="{{ url ('images/product/'.$page->image) }}" alt="product-img"> --}}
           <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
             <div class="swiper-wrapper">
               <div class="swiper-slide">
@@ -73,7 +72,7 @@ $images = explode(',', $page->images);
       </div>
       <div class="col-lg-5">
         <div class="caption-1 pd-10">
-          <h3 class="name">Portable Sand Blasting Machine</h3>
+          <h1 class="name" style="font-size: 22px;font-weight:500;">{{ $page->title }}</h1>
           <div class="star-sty">
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
@@ -81,18 +80,19 @@ $images = explode(',', $page->images);
             <i class="fa fa-star"></i>
             <i class="fa fa-star-half-full"></i>
           </div>
-          <p class="price">₹40K-10Lakhs</p>
+          <p class="price">₹{{ $page->price_range }}</p>
         </div>
         <div class="slider-button-sec-1 btn-st-span">
-          <button type="button" class="custom-btn openCustomProduct btn-3 get-but" data-url="{{url('/ajax/product/'.$page->slug)}}">
+          <button type="button" class="custom-btn openCustomProduct btn-3 get-but"
+            data-url="{{url('/ajax/product/'.$page->slug)}}">
             <span>
-              <img src="{{ asset('images/img/quote.png') }}" alt="job image" title="job image" style="width: 30px" />
+              <img src="{{ asset('images/img/quote.png') }}" alt="Upgrade" title="Upgrade" style="width: 30px" />
               Upgrade Your Machine
             </span>
           </button>
         </div>
         <div class="send-enq-sty">
-          <h5>Send Enquiry for <b>Portable Sand Blasting Machine</b></h5>
+          <h5>Send Enquiry for <b>{{ $page->title }}</b></h5>
           <form id="singleProductForm" method="POST">
             {{ csrf_field() }}
             <div class="cont-row-p" style="margin-top:10px;">
@@ -101,16 +101,9 @@ $images = explode(',', $page->images);
                 <input type="text" id="name" name="name" placeholder="Name" required>
               </div>
             </div>
-            {{-- <div class="cont-row-p">
-              <div class="row-lable"><i class="fa fa-mobile-alt"></i> </div>
-              <div class="row-text">
-                <input type="text" id="mobile" name="mobile" placeholder="Mobile" required="">
-              </div>
-            </div> --}}
             <div class="cont-row-p">
               <div class="row-lable"><i class="fa fa-mobile-alt"></i> </div>
               <div class="row-text mobile">
-                {{-- <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required=""> --}}
                 <select class="custom_select">
                   <option selected value="+91">+91</option>
                   @foreach($countries as $country)
@@ -142,15 +135,16 @@ $images = explode(',', $page->images);
   <div class="container">
     <div class="row">
       <div class="col-lg-7">
-        <div class="product-details-sty">
-          <p>{!! $page->description !!}</p>
-          <h3> Application of {{ $page->title }} </h3>
-          <ul>
-            {!! $page->applications !!}
-          </ul>
-          <h4>Additional Information of {{ $page->title }}</h4>
-          <div class="specification-row">
+        <div class="content-details">
+          <div class="specification-details pb-4">
+            <h2>Additional Information of {{ $page->title }}</h2>
             <table>
+              @foreach(json_decode($page->field)->name as $key => $field)
+              <tr>
+                <td>{{ $field }}</td>
+                <td>{{ json_decode($page->field)->value[$key] }}</td>
+              </tr>
+              @endforeach
               @foreach(json_decode($page->field1)->name as $key => $field1)
               <tr>
                 <td>{{ $field1 }}</td>
@@ -158,6 +152,13 @@ $images = explode(',', $page->images);
               </tr>
               @endforeach
             </table>
+          </div>
+          <h3> Application of {{ $page->title }} </h3>
+          <div>
+            {!! $page->applications !!}
+          </div>
+          <div>
+            {!! $page->description !!}
           </div>
         </div>
       </div>
@@ -171,6 +172,7 @@ $images = explode(',', $page->images);
   </div>
 </div>
 
+@if(count($faqs))
 <div class="faq-row" style="padding: 0px">
   <div class="container">
     <div class="row">
@@ -179,7 +181,6 @@ $images = explode(',', $page->images);
       </div>
     </div>
   </div>
-  @if(!empty($faqs))
   <div class="container">
     <div class="row">
       @foreach($faqs as $faq)
@@ -196,9 +197,9 @@ $images = explode(',', $page->images);
       @endforeach
     </div>
   </div>
-  @endif
 </div>
-
+@endif
+@if(count($product_single))
 <div class="explore-our-range-row">
   <div class="container">
     <div class="row">
@@ -238,7 +239,7 @@ $images = explode(',', $page->images);
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star-half-full"></i>
                   </div>
-                  <p class="price">₹40K-10Lakhs</p>
+                  <p class="price">₹{{$pro->price_range}}</p>
                   <div class="slider-button-sec-1">
                     <button type="button" class="custom-btn btn-3 get-but" data-bs-toggle="modal"
                       data-bs-target="#myModal-1">
@@ -255,6 +256,7 @@ $images = explode(',', $page->images);
     </div>
   </div>
 </div>
+@endif
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
@@ -283,7 +285,7 @@ $images = explode(',', $page->images);
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const section = document.querySelector(".product-details-sty");
+    const section = document.querySelector(".content-details");
     const tocContainer = document.getElementById("tableOfContents");
 
     if (!section || !tocContainer) return;

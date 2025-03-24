@@ -9,8 +9,8 @@ $countries = App\Models\Country::get();
   <div class="container">
     <div class="row">
       <div class="col-lg-3 col-md-6">
-        <div class="footer-col-sty-1">
-          <img src="{{asset('images/img/white-logo.png')}}" alt="white logo">
+        <div class="footer-col-sty">
+          <img src="{{ url('images/setting', $setting->logo2) }}" class="pt-2" alt="{{$setting->title}}" title="{{$setting->title}}">
         </div>
       </div>
       <div class="col-lg-3 col-md-6">
@@ -18,7 +18,9 @@ $countries = App\Models\Country::get();
           <p>Our Products</p>
           <ul>
             @foreach($productf as $prof)
-            <li class="cool-link"><a href="{{ route('page', $prof->slug)}}">{{$prof->title}}</a></li>
+            <li>
+              <div><a class="cool-link" href="{{ route('page', $prof->slug)}}">{{$prof->title}}</a></div>
+            </li>
             @endforeach
           </ul>
         </div>
@@ -49,10 +51,18 @@ $countries = App\Models\Country::get();
               <li>{{$setting->address}}</li>
             </div>
             <div class="f-contact-d-s">
-              <i class="fa fa-facebook"></i>
-              <i class="fa fa-instagram"></i>
-              <i class="fa fa-twitter"></i>
-              <i class="fa fa-youtube"></i>
+              @if($setting->facebook)
+              <a href="{{$setting->facebook}}"><i class="fa fa-facebook"></i></a>
+              @endif
+              @if($setting->instagram)
+              <a href="{{$setting->instagram}}"><i class="fa fa-instagram"></i></a>
+              @endif
+              @if($setting->twitter)
+              <a href="{{$setting->twitter}}"><i class="fa fa-twitter"></i></a>
+              @endif
+              @if($setting->youtube)
+              <a href="{{$setting->youtube}}"><i class="fa fa-youtube"></i></a>
+              @endif
             </div>
           </ul>
         </div>
@@ -472,7 +482,7 @@ $countries = App\Models\Country::get();
                           </div>
                           <div class="slider-button-sec-1">
                             <button type="button" class="btn button-sty" data-bs-toggle="modal" data-bs-target="#myModal-1">
-                              <img src="{{ asset('images/img/quote.png') }}" alt="job image" title="job image" /> Get
+                              <img src="{{ asset('images/img/quote.png') }}" alt="Quotation" title="Quotation" /> Get
                               Quotation</button>
                           </div>
                           <div class="caption-1">

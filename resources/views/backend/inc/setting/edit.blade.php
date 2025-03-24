@@ -72,6 +72,7 @@
         }
     });
     var logo_upload_url = $('.logo-upload-url').data('url');
+    var logo2_upload_url = $('.logo2-upload-url').data('url');
     var favicon_upload_url = $('.favicon-upload-url').data('url');
     const a = '<div class="dz-preview dz-file-preview">\n<div class="dz-details">\n  <div class="dz-thumbnail">\n    <img data-dz-thumbnail>\n    <span class="dz-nopreview">No preview</span>\n    <div class="dz-success-mark"></div>\n    <div class="dz-error-mark"></div>\n    <div class="dz-error-message"><span data-dz-errormessage></span></div>\n    <div class="progress">\n      <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuemin="0" aria-valuemax="100" data-dz-uploadprogress></div>\n    </div>\n  </div>\n  <div class="dz-filename" data-dz-name></div>\n  <div class="dz-size" data-dz-size></div>\n</div>\n</div>';
     var myDropzone = new Dropzone("#dropzone1-basic", {
@@ -201,6 +202,70 @@
             }
         },
     });
+    
+    var myDropzone2 = new Dropzone(".dropzone3-basic", {
+        previewTemplate: a,
+        parallelUploads: 1,
+        uploadMultiple: false,
+        maxFilesize: 5,
+        addRemoveLinks: !0,
+        maxFiles: 1,
+        acceptedFiles: "image/*",
+        removedfile: function(file) {
+            console.log('file', file);
+            if (file.status != 'error') {
+                var logo2_name = $('.logo2_file').val();
+                var logo2_delete_url = $('.logo2-delete-url').data('url');
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    },
+                    type: 'POST',
+                    url: logo2_delete_url,
+                    data: {
+                        filename: logo2_name
+                    },
+                    success: function(data) {
+                        $('.logo2_file').val('');
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                });
+            }
+            var fileRef;
+            return (fileRef = file.previewElement) != null ?
+                fileRef.parentNode.removeChild(file.previewElement) : void 0;
+        },
+        success: function(file, response) {
+            console.log(response);
+            if (file.status != 'error') {
+                var formData = new FormData();
+                formData.append('image', file);
+                $.ajax({
+                    type: 'POST',
+                    url: logo2_upload_url,
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: (data) => {
+                        $('.logo2_file').val(data.success);
+                        file.previewElement.classList.add("dz-success");
+
+                        file.previewElement.id = data.success;
+                        var olddatadzname = file.previewElement.querySelector("[data-dz-name]");
+                        file.previewElement.querySelector("img").alt = data.success;
+                        olddatadzname.innerHTML = data.success;
+
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        },
+    });
 </script>
 
 @if($setting->logo)
@@ -213,6 +278,18 @@
     myDropzone.emit("thumbnail", mockFile, "{{ url('images/setting/' . $setting->logo) }}");
     myDropzone.emit("complete", mockFile);
     $('.logo_file').val('{{ $setting->logo }}')
+</script>
+@endif
+@if($setting->logo2)
+<script>
+    var mockFile2 = {
+        name: "{{ $setting->logo2 }}",
+        size: "2"
+    };
+    myDropzone2.emit("addedfile", mockFile2);
+    myDropzone2.emit("thumbnail", mockFile2, "{{ url('images/setting/' . $setting->logo2) }}");
+    myDropzone2.emit("complete", mockFile2);
+    $('.logo2_file').val('{{ $setting->logo2 }}')
 </script>
 @endif
 @if($setting->favicon)

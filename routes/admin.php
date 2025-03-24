@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
     Route::get('/category/restore/{category:id}', 'CategoryController@restore')->name('category.restore');
     Route::get('/blogcategory/restore/{blogcategory:id}', 'BlogcategoryController@restore')->name('blogcategory.restore');
     Route::get('/tag/restore/{tag:id}', 'TagController@restore')->name('tag.restore');
+    Route::get('/client/restore/{client:id}', 'ClientController@restore')->name('client.restore');
     Route::get('/productfilter/restore/{productfilter:id}', 'ProductfilterController@restore')->name('productfilter.restore');
     Route::get('/inquiry/restore/{inquiry:id}', 'InquiryController@restore')->name('inquiry.restore');
 
@@ -88,6 +89,8 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
     Route::post('/setting', 'SettingController@update')->name('setting.update');
     Route::post('/setting/logo', 'SettingController@logo_upload')->name('setting.logo');
     Route::post('/setting/logo/detele', 'SettingController@logo_delete')->name('setting.logo.delete');
+    Route::post('/setting/logo2', 'SettingController@logo2_upload')->name('setting.logo2');
+    Route::post('/setting/logo2/detele', 'SettingController@logo2_delete')->name('setting.logo2.delete');
     Route::post('/setting/favicon', 'SettingController@favicon_upload')->name('setting.favicon');
     Route::post('/setting/favicon/detele', 'SettingController@favicon_delete')->name('setting.favicon.delete');
 
@@ -104,6 +107,7 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
     Route::post('/blog/deleteAll', 'BlogController@deleteAll')->name('blog.deleteAll');
     Route::post('/blogcategory/deleteAll', 'BlogcategoryController@deleteAll')->name('blogcategory.deleteAll');
     Route::post('/tag/deleteAll', 'TagController@deleteAll')->name('tag.deleteAll');
+    Route::post('/client/deleteAll', 'ClientController@deleteAll')->name('client.deleteAll');
     Route::post('/faq/deleteAll', 'FaqController@deleteAll')->name('faq.deleteAll');
     Route::post('/slider/deleteAll', 'SliderController@deleteAll')->name('slider.deleteAll');
     Route::post('/application/deleteAll', 'ApplicationController@deleteAll')->name('application.deleteAll');
@@ -132,6 +136,10 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
     Route::post('/category/image', 'CategoryController@image_upload')->name('category.image');
     Route::post('/category/image/detele', 'CategoryController@image_delete')->name('category.image.delete');
 
+    // Client
+    Route::post('/client/image', 'ClientController@image_upload')->name('client.image');
+    Route::post('/client/image/detele', 'ClientController@image_delete')->name('client.image.delete');
+
     // Productfilter
     Route::post('/productfilter/image', 'ProductfilterController@image_upload')->name('productfilter.image');
     Route::post('/productfilter/image/detele', 'ProductfilterController@image_delete')->name('productfilter.image.delete');
@@ -153,6 +161,7 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'admin', 'as' => 'adm
         'category'  => 'CategoryController',
         'blogcategory' => 'BlogcategoryController',
         'tag' => 'TagController',
+        'client' => 'ClientController',
         'faq' => 'FaqController',
         'slider' => 'SliderController',
         'application' => 'ApplicationController',

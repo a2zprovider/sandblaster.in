@@ -3,8 +3,6 @@
 @section('description', $about->seo_description)
 
 @extends('frontend.layout.master')
-
-
 @push('styles')
 <style>
   body,
@@ -22,71 +20,87 @@
       <div class="col-sm-6">
         <about> About Us </about>
       </div>
-
       <div class="col-sm-6 float-st"> <a href="{{ route('home') }}"><i class="fas fa-home"></i> </a>
         <ab> <i class="fa fa-angle-double-right"></i> About Us <ab>
       </div>
-
     </div>
   </div>
 </div>
-</div>
-
-
 
 <div>
-
-  <!--Our Mission strat-->
-
-
   <div class="our-mission-row">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <img src="{{ asset('images/img/our-mission.png') }}" alt="about img">
+          <img src="{{ asset('images/img/our-mission.png') }}" alt="Our Mission">
         </div>
         <div class="col-lg-6">
           <div class="our">Our Mission
             <h2>Powerful Sand Blasting Solutions</h2>
           </div>
-
           <div class="row">
             <div class="main-b-r">
               <div class="row-b-1"></div>
               <div class="row-b-2"></div>
             </div>
           </div>
-          <p>Our mission is to provide cutting-edge sand blasting machines that deliver unmatched precision, efficiency,
-            and reliability. We are dedicated to enhancing surface treatment processes across industries by offering
-            innovative solutions that improve cleaning, finishing, and preparation. By combining advanced technology
-            with sustainable practices, we aim to empower businesses to achieve exceptional results while maintaining
-            the highest standards of quality and performance.</p>
+          <div class="content-details">
+            <p class="pb-0">Our mission is to constantly upgrade with the latest technology & expand our business by
+              leading the global
+              market in abrasive blasting & shot blasting machine technology.</p>
+
+            <p class="pb-0 pt-0">The Sales Team is located in Gulf Countries - Dubai. Our Quality Control Department is
+              equipped with all
+              the
+              necessary Latest equipment. Our Company has a robust After Sales Services Facility. Our trained and
+              experienced Technicians to look after the Service Calls. Our equipment is eco-friendly and provides
+              optimum
+              economic solutions. Our highly qualified and experienced design team using the latest software as
+              Auto-Cad,
+              Solid works, CATIA for designing the machine. Our Huge inventory of Spare Parts is maintained so that
+              these
+              are made available in Ready Stock.</p>
+
+            <p class="pb-0 pt-0">We supply blasting machines in the aviation industry, casting and Forging industry,
+              Automobile industry -
+              Turbochargers, Piston, Cylinder, Gears, Clutches, Shafts. Transformer Industries – Tank, Fins, Radiators,
+              Fabrication Industries – Tanks, Heat Exchangers, Poles, etc. Shipping Industries – for remove rust, paint,
+              corrosion from ships using abrasives media like steel shot, grit shot, and <a
+                href="/aluminum-oxide">aluminum oxide</a>. Pipe Industries –
+              for cleaning & remove welding flux, remove corrosion.</p>
+          </div>
         </div>
       </div>
 
       <div class="row pd-100">
-
         <div class="col-lg-6">
-          <div class="our">Our Mission</div>
-          <h2>Powerful Sand Blasting Solutions</h2>
+          <div class="our">Our Vision</div>
+          <h2>Powerful Shot Blasting Machine in Australia</h2>
           <div class="row">
             <div class="main-b-r">
               <div class="row-b-1"></div>
               <div class="row-b-2"></div>
             </div>
           </div>
-          <p>Our mission is to provide cutting-edge sand blasting machines that deliver unmatched precision, efficiency,
-            and reliability. We are dedicated to enhancing surface treatment processes across industries by offering
-            innovative solutions that improve cleaning, finishing, and preparation. By combining advanced technology
-            with sustainable practices, we aim to empower businesses to achieve exceptional results while maintaining
-            the highest standards of quality and performance.</p>
+          <div class="content-details">
+            <p class="pb-0">Micro Blaster's vision to expand its horizon by entering the export market with
+              international quality
+              products to achieve global recognition.</p>
+            <p class="pb-0 pt-0">
+              We are among the oldest in the Industry of Shot Blasting, <a href="/sand-blasting-room">Blast Room</a>
+              System, Vacuum blast machine, table
+              shot blast machine, tumble shot blast Manufacturers in Australia The Company has commenced production of
+              Shotblasting & Blast Room many years. Since then it has delivered more than 8000 Shot Blasting & table
+              blast
+              equipment, tumble shot-blasting machine. Our Manufacturing Facilities consisting of the workshop is having
+              18000 sq. ft. covered area.</p>
+          </div>
         </div>
-
         <div class="col-lg-6">
-          <img src="{{ asset('images/img/our-mission.png') }}" alt="about img" />
+          <img src="{{ asset('images/img/our-mission.png') }}" alt="Our Mission" />
         </div>
       </div>
-      <div class="row">
+      <div class="content-details">
         {!! $about->description !!}
       </div>
     </div>
@@ -98,7 +112,8 @@
       <div class="row">
         <div class="col-lg-4 col-md-4">
           <div class="why-choose-sty">
-            <img src="{{ asset('images/img/sand-blasting-icon.png') }}" alt="job image" title="job image" />
+            <img src="{{ asset('images/img/sand-blasting-icon.png') }}" alt="Best Sand Blasting Solutions"
+              title="Best Sand Blasting Solutions" />
             <h3>Best Sand Blasting Solutions</h3>
             <p>We design and manufacture advanced sand blasting machines tailored to meet the unique needs of various
               industries.</p>
@@ -106,7 +121,8 @@
         </div>
         <div class="col-lg-4 col-md-4">
           <div class="why-choose-sty">
-            <img src="{{ asset('images/img/surface-prepration.png') }}" alt="job image" title="job image" />
+            <img src="{{ asset('images/img/surface-prepration.png') }}" alt="Surface Preparation Expertise"
+              title="Surface Preparation Expertise" />
             <h3>Surface Preparation Expertise</h3>
             <p>We specialize in providing high-quality surface cleaning, finishing, and preparation for materials such
               as metal, & concrete.</p>
@@ -114,7 +130,8 @@
         </div>
         <div class="col-lg-4 col-md-4">
           <div class="why-choose-sty">
-            <img src="{{ asset('images/img/customisation.png') }}" alt="job image" title="job image" />
+            <img src="{{ asset('images/img/customisation.png') }}" alt="Customized Blasting Systems"
+              title="Customized Blasting Systems" />
             <h3>Customized Blasting Systems</h3>
             <p>Offering customized sandblasting equipment and systems to ensure optimal performance for specific
               applications.</p>
@@ -124,7 +141,8 @@
       <div class="row">
         <div class="col-lg-4 col-md-4">
           <div class="why-choose-sty">
-            <img src="{{ asset('images/img/industrial-application.png') }}" alt="job image" title="job image" />
+            <img src="{{ asset('images/img/industrial-application.png') }}" alt="Industry-Specific Applications"
+              title="Industry-Specific Applications" />
             <h3>Industry-Specific Applications</h3>
             <p>We serve a wide range of industries, including manufacturing, construction, automotive, aerospace, and
               more.</p>
@@ -132,7 +150,8 @@
         </div>
         <div class="col-lg-4 col-md-4">
           <div class="why-choose-sty">
-            <img src="{{ asset('images/img/maintenance-support.png') }}" alt="job image" title="job image" />
+            <img src="{{ asset('images/img/maintenance-support.png') }}" alt="Maintenance and Support"
+              title="Maintenance and Support" />
             <h3>Maintenance and Support</h3>
             <p>We provide ongoing maintenance services, training, and technical support to ensure your sandblasting
               equipment.</p>
@@ -140,7 +159,8 @@
         </div>
         <div class="col-lg-4 col-md-4">
           <div class="why-choose-sty">
-            <img src="{{ asset('images/img/global.png') }}" alt="job image" title="job image" />
+            <img src="{{ asset('images/img/global.png') }}" alt="Global Distribution Network"
+              title="Global Distribution Network" />
             <h3>Global Distribution Network</h3>
             <p>We provide global access to top-quality sandblasting solutions for businesses everywhere.</p>
           </div>
@@ -164,11 +184,9 @@
         </div>
       </div>
       <div class="row">
-        <img src="{{ asset('images/img/global-offices.png') }}" alt="job image" />
+        <img src="{{ asset('images/img/global-offices.png') }}" alt="Global Office" />
       </div>
-
     </div>
-
   </div>
 
   <!-- what we do end---->
@@ -188,101 +206,32 @@
         <div class="row-b-2"></div>
       </div>
     </div>
-
     <div class="explore-slider">
-
       <div class="container">
         <div class="row">
-
           <div class="swiper mySwiper">
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-wrapper">
+              @foreach ($clients as $client)
               <div class="swiper-slide">
-
                 <div class="card-sty">
                   <aside class="card-ab team1">
-                    <img src="{{ asset('images/img/our-clients.png') }}" alt="about slider">
+                    <img src="{{ url('images/client/' . $client->image) }}" alt="{{$client->title}}">
                     <div class="caption">
-                      <h2 class="name">Indian Railways</h2>
-
-                      <p class="datesty"><i class="fas fa-link"></i> URL: wwwindianrailways.in</p>
+                      <h2 class="name">{{$client->title}}</h2>
+                      <p class="datesty"><i class="fas fa-link"></i> URL: {{$client->url}}</p>
                     </div>
                   </aside>
                 </div>
               </div>
-              <div class="swiper-slide">
-                <div class="card-sty">
-                  <aside class="card-ab team1">
-                    <img src="{{ asset('images/img/our-clients.png') }}" alt="about slider">
-                    <div class="caption">
-                      <h2 class="name">Indian Railways</h2>
-
-                      <p class="datesty"><i class="fas fa-link"></i> URL: wwwindianrailways.in</p>
-                    </div>
-                  </aside>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="card-sty">
-                  <aside class="card-ab team1">
-                    <img src="{{ asset('images/img/our-clients.png') }}" alt="about slider">
-                    <div class="caption">
-                      <h2 class="name">Indian Railways</h2>
-
-                      <p class="datesty"><i class="fas fa-link"></i> URL: wwwindianrailways.in</p>
-                    </div>
-                  </aside>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="card-sty">
-                  <aside class="card-ab team1">
-                    <img src="{{ asset('images/img/our-clients.png') }}" alt="about slider">
-                    <div class="caption">
-                      <h2 class="name">Indian Railways</h2>
-
-                      <p class="datesty"><i class="fas fa-link"></i> URL: wwwindianrailways.in</p>
-                    </div>
-                  </aside>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="card-sty">
-                  <aside class="card-ab team1">
-                    <img src="{{ asset('images/img/our-clients.png') }}" alt="about slider">
-                    <div class="caption">
-                      <h2 class="name">Indian Railways</h2>
-
-                      <p class="datesty"><i class="fas fa-link"></i> URL: wwwindianrailways.in</p>
-                    </div>
-                  </aside>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="card-sty">
-                  <aside class="card-ab team1">
-                    <img src="{{ asset('images/img/our-clients.png') }}" alt="about slider">
-                    <div class="caption">
-                      <h2 class="name">Indian Railways</h2>
-
-                      <p class="datesty"><i class="fas fa-link"></i> URL: wwwindianrailways.in</p>
-                    </div>
-                  </aside>
-                </div>
-              </div>
-
+              @endforeach
             </div>
-
-
           </div>
-
         </div>
       </div>
     </div>
   </div>
-
-
 
   <!------ get in tough strat ----->
   <div class="get-in-tough">
@@ -314,17 +263,9 @@
                     <input type="text" id="email" name="email" placeholder="Email" required="">
                   </div>
                 </div>
-                {{-- <div class="cont-row">
-                  <div class="row-lable"><i class="fa fa-mobile-alt"></i> </div>
-                  <div class="row-text">
-                    <input type="text" id="mobile" name="mobile" placeholder="Mobile" required="">
-                  </div>
-                </div> --}}
                 <div class="cont-row">
                   <div class="row-lable"><i class="fa fa-mobile-alt"></i> </div>
                   <div class="row-text mobile">
-                    {{-- <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required=""> --}}
-
                     <select class="custom_select">
                       <option selected value="+91">+91</option>
                       @foreach($countries as $country)
